@@ -3,6 +3,9 @@ from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import BoundaryNorm
+import matplotlib as mpl
+
+mpl.use('Agg')
 
 xval = [i for i in np.arange(0,5,0.2)]
 yval = [i for i in np.arange(0,5,0.2)]
@@ -43,4 +46,6 @@ ax.set_xlabel("X",fontsize=20)
 ax.set_ylabel("Y",fontsize=20)
 ax.set_zlabel("Z",fontsize=20)
 
-plt.show()
+# plt.show()
+plt.savefig('fig.pdf')
+print('Done!')
