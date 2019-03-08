@@ -1,25 +1,28 @@
-\documentclass{minimal}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
 
 \begin{document}
 
-Conjunto de reglas $\{(P>\mbox{Umbral})\leftrightarrow 0, (P\leq\mbox{Umbral})\leftrightarrow 1\}$
+Sistema de control de temperatura de un panal de abejas. Sistema de recolección de alimento de un hormiguero. Interacción entre las acciones de los individuos y un ``estado macro'' (temperatura, rastros de feromonas en el entorno, etc.). 
+
+Modelo para estudiar la interacción elemental entre los ``estados micro'', es decir, las acciones de los individuos, y un estado macro (Elementary Micro Macro Interaction, EMMI). 
 
 \
 
 \begin{itemize}
-\item[Agentes:] 
+\item[Agentes:] Sea $x$ un agente.
 
 	\begin{enumerate}
-	\item Decisión $\{0, 1\}$
-	\item Regla actual
-	\item Umbral
+	\item Acción $a_x\in\{0, 1\}$
+	\item Umbral $u_x\in[0,1]$
+	\item Regla $r_x\in\{(P>u_x)\leftrightarrow a_x=0, (P> u_x)\leftrightarrow a_x=1\}$
 	\end{enumerate}
 
-\item[Estados macro:] $P$, proporción 1's
+\item[Estados macro:] $P$, proporción $a_x=1$ sobre el total de agentes
+
+\item[Dinámica:] Acción en $a_x(t+1)$ de cada agente se obtiene así: se calcula el estado macro  en el estado $t$ dependiendo de las acciones $a_x(t)$ de todos los agentes. Cada agente $x$ obtiene su acción $a_x(t+1)$ con base en su regla $r_x$.
 
 \item[Población inicial:] Número de agentes; decisión inicial de agentes; regla inicial de agentes
-
-\item[Dinámica:] Decisión $t+1$
 
 \item[Aprendizaje:] 
 

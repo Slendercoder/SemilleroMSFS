@@ -38,7 +38,8 @@ def simDesv(Agentes, Num_Iteraciones):
         for a in Agentes:
             a.decision(Macro[-1])
 
-        B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
+        B = [Agentes[0], Agentes[110]]
+        # B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
         Estados.append([a.estado for a in B])
 
     return Macro, Estados
@@ -86,15 +87,16 @@ for i in range(100):
     Agentes.append(agente(rd.randint(0,1), 0.2))
 
 for i in range(400):
-    Agentes.append(agente(rd.randint(0,1), 0.48))
+    Agentes.append(agente(rd.randint(0,1), 0.6))
 
-for i in range(400):
-    Agentes.append(agente(rd.randint(0,1), 0.51))
+# for i in range(400):
+#     Agentes.append(agente(rd.randint(0,1), 0.6))
+#
+# for i in range(100):
+#     Agentes.append(agente(rd.randint(0,1), 0.8))
 
-for i in range(100):
-    Agentes.append(agente(rd.randint(0,1), 0.8))
-
-B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
+# B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
+B = [Agentes[0], Agentes[110]]
 estAux = [a.estado for a in B]
 Macro, Estados = simDesv(Agentes, Num_Iteraciones)
 Estados.insert(0, estAux)
