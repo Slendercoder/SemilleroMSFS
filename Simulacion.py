@@ -30,7 +30,7 @@ def crearAgentesAleatorios(media, sd, Num_Agentes):
 
 def simDesv(Agentes, Num_Iteraciones):
 
-    Estados = []
+    # Estados = []
     Macro = []
     for i in range(Num_Iteraciones):
         Macro.append(calcula_macro(Agentes))
@@ -38,25 +38,26 @@ def simDesv(Agentes, Num_Iteraciones):
         for a in Agentes:
             a.decision(Macro[-1])
 
-        B = [Agentes[0], Agentes[110]]
+        # B = [Agentes[0], Agentes[110]]
         # B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
-        Estados.append([a.estado for a in B])
+        # Estados.append([a.estado for a in B])
 
-    return Macro, Estados
+    # return Macro, Estados
+    return Macro
 
 ######################################
 # Comienzo ejecucion
 ######################################
 
 Num_Agentes = 10
-media = 0.5
 Num_Iteraciones = 100
+transiente = 10
 # Macro = []
+# media = 0.5
 # desviacion = 0
-# Agentes = [agente(rd.randint(0,1),rd.normalvariate(media,desviacion)) for i in range(Num_Agentes)]
+# Agentes = [agente(rd.randint(0,1), rd.normalvariate(media, desviacion)) for i in range(Num_Agentes)]
 # Estados = [i.estado for i in Agentes]
-
-Agentes = []
+# Agentes = []
 
 # a = agente(0, 0)
 # Agentes.append(a)
@@ -81,13 +82,13 @@ Agentes = []
 # a = agente(0, 1)
 # Agentes.append(a)
 
-Agentes = []
-
-for i in range(100):
-    Agentes.append(agente(rd.randint(0,1), 0.2))
-
-for i in range(400):
-    Agentes.append(agente(rd.randint(0,1), 0.6))
+# Agentes = []
+#
+# for i in range(100):
+#     Agentes.append(agente(rd.randint(0,1), 0.2))
+#
+# for i in range(400):
+#     Agentes.append(agente(rd.randint(0,1), 0.6))
 
 # for i in range(400):
 #     Agentes.append(agente(rd.randint(0,1), 0.6))
@@ -96,28 +97,36 @@ for i in range(400):
 #     Agentes.append(agente(rd.randint(0,1), 0.8))
 
 # B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
-B = [Agentes[0], Agentes[110]]
-estAux = [a.estado for a in B]
-Macro, Estados = simDesv(Agentes, Num_Iteraciones)
-Estados.insert(0, estAux)
+# B = [Agentes[0], Agentes[110]]
+# estAux = [a.estado for a in B]
+# Macro, Estados = simDesv(Agentes, Num_Iteraciones)
+# Estados.insert(0, estAux)
 
-for i in Estados:
-    print(i)
+# for i in Estados:
+#     print(i)
 
-Macros = {}
-
-Macros[0] = Macro
-
-# desviaciones = [0, 0.5]
 # Macros = {}
-# for sd in desviaciones:
-#     # Agentes = crearAgentesAleatorios(media, sd, Num_Agentes)
-#     Macro = simDesv(Agentes, Num_Iteraciones)
-#     Macros[sd] = Macro
+
+# Macros[0] = Macro
+
+medias = [i/10 for i in range(10)]
+desviaciones = [i/10 for i in range(5)]
+Macros = {}
+mediasMacro = {}
+desvEstsMacro = {}
+for m in medias:
+    for sd in desviaciones:
+        Agentes = crearAgentesAleatorios(m, sd, Num_Agentes)
+        Macro = simDesv(Agentes, Num_Iteraciones)
+        Macros[(m, sd)] = Macro[transiente:]
+        mediasMacro[(m, sd)] = np.mean(Macro)
+        desvEstsMacro[(m, sd)] = np.std(Macro)
 
 # plt.hist(Estados)
 # plt.savefig("Histograma.png")
 # print(Macros)
+
+
 
 for key in Macros:
     plt.plot(range(Num_Iteraciones), Macros[key], label = key)

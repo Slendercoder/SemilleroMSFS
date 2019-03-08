@@ -23,7 +23,7 @@ z = np.asarray(z)
 ##Evently spaced intervals in the axes
 x1 = np.linspace(x.min(),x.max(),100)
 y1 = np.linspace(y.min(),y.max(),100)
-# VERY IMPORTANT, to tell matplotlib how is your data organized
+# VERY IMPORTANT, to tell matplotlib how your data is organized
 z1 = griddata((x, y), z, (x1[None,:], y1[:,None]), method='cubic')
 
 
