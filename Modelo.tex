@@ -1,32 +1,45 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amssymb, amsmath,bm,amsthm}
+
+\newtheorem{lema}{Lema}
 
 \begin{document}
 
-Sistema de control de temperatura de un panal de abejas. Sistema de recolección de alimento de un hormiguero. Interacción entre las acciones de los individuos y un ``estado macro'' (temperatura, rastros de feromonas en el entorno, etc.). 
-
-Modelo para estudiar la interacción elemental entre los ``estados micro'', es decir, las acciones de los individuos, y un estado macro (Elementary Micro Macro Interaction, EMMI). 
+Motivación: 
+\begin{itemize}
+\item Sistema de control de temperatura de un panal de abejas. Sistema de recolección de alimento de un hormiguero. Interacción entre las acciones de los individuos y un ``estado macro'' (temperatura, rastros de feromonas en el entorno, etc.).
+\item Desarrollar un sistema formal sencillo para  estudiar la interacción elemental entre el estado micro (p.ej., la colección de los estados de las abejas en un instante determinado), y un estado macro (p.ej., la temperatura del panal) (Elementary Micro Macro Interaction, EMMI). 
+\item Comparación con los autómatas celulares.
+\end{itemize}
 
 \
 
+Definición de un EMMI:
 \begin{itemize}
-\item[Agentes:] Sea $x$ un agente.
-
+\item Sea $\mathcal{I}=\{1,\ldots,I\}$ un conjunto de agentes. Para cada $i\,{\in}\,I$ se define:
 	\begin{enumerate}
-	\item Acción $a_x\in\{0, 1\}$
-	\item Umbral $u_x\in[0,1]$
-	\item Regla $r_x\in\{(P>u_x)\leftrightarrow a_x=0, (P> u_x)\leftrightarrow a_x=1\}$
+	\item Umbral $u_i\in[0,1]$.
+	\item Estado $x_i[k]\in\{0, 1\}$, para $k\in\mathbb{N}$.
+	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }X[k]\leq u_i\\ 0, & \mbox{ en otro caso }\end{cases}$
 	\end{enumerate}
 
-\item[Estados macro:] $P$, proporción $a_x=1$ sobre el total de agentes
-
-\item[Dinámica:] Acción en $a_x(t+1)$ de cada agente se obtiene así: se calcula el estado macro  en el estado $t$ dependiendo de las acciones $a_x(t)$ de todos los agentes. Cada agente $x$ obtiene su acción $a_x(t+1)$ con base en su regla $r_x$.
-
-\item[Población inicial:] Número de agentes; decisión inicial de agentes; regla inicial de agentes
-
-\item[Aprendizaje:] 
-
+\item Estado macro: $X[k]=\sum_{i\in I} x_i[k]$, para $k\in\mathbb{N}$.
 \end{itemize}
 
+\begin{lema}
+No puede haber dos transiciones consecutivas a estados de mayor número de individuos. Es decir, si $X[k]\,{\leq}\,X[k{+}1]$, entonces $X[k{+}2]\,{\leq}\, X[k{+}1]$.
+\end{lema}
+\begin{proof}
+Supongamos que $X[k]\,{\leq}\,X[k{+}1]$. Vamos a demostrar primero que $x_i[k{+}2]\,{\leq}\, x_i[k{+}1]$ para todo $i$. Tenemos sólo dos casos:
+
+\begin{itemize}
+\item Supongamos que $x_i[k{+}1]=0$. Luego, por la definición de $x_i[k{+}1]$ y la hipótesis se tiene que $u_i<X[k]\leq X[k{+}1]$ y, en consecuencia, $x_i[k{+}2]=0$. Entonces $x_i[k{+}2]\leq x_i[k{+}1]$.
+\item Supongamos que $x_i[k{+}1]=1$. Luego, como $x_i[k{+}2]\in\{0,1\}$, $x_i[k{+}2]\leq x_i[k{+}1]$.
+\end{itemize}
+
+Entonces $\sum_i x_i[k{+}2]\leq \sum_i x_i[k{+}1]$. Por lo tanto, por la definición de $X[k]$ se tiene que $X[k{+}2]\leq X[k{+}1]$.
+\end{proof}
 
 \end{document}
+
