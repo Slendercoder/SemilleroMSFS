@@ -1,7 +1,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amssymb, amsmath,bm,amsthm}
+\usepackage[spanish]{babel}
+\usepackage{amssymb, amsmath,bm,amsthm,enumitem}
 
+\newtheorem{teor}{Teorema}
 \newtheorem{lema}{Lema}
 
 \begin{document}
@@ -17,28 +19,51 @@ Motivación:
 
 Definición de un EMMI:
 \begin{itemize}
-\item Sea $\mathcal{I}=\{1,\ldots,I\}$ un conjunto de agentes. Para cada $i\,{\in}\,I$ se define:
-	\begin{enumerate}
+\item Sea $\mathcal{I}=\{1,\ldots,I\}$ un conjunto de agentes. Para cada $i\,{\in}\,\mathcal{I}$ se define:
+	\begin{enumerate}[label=(\alph*)]
 	\item Umbral $u_i\in[0,1]$.
 	\item Estado $x_i[k]\in\{0, 1\}$, para $k\in\mathbb{N}$.
-	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }X[k]\leq u_i\\ 0, & \mbox{ en otro caso }\end{cases}$
+	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }X[k]\leq u_i\\ 0, & \mbox{ si } u_i < X[k]\end{cases}$
 	\end{enumerate}
 
-\item Estado macro: $X[k]=\sum_{i\in I} x_i[k]$, para $k\in\mathbb{N}$.
+\item Estado macro: $X[k]=\sum_{i\in\mathcal{I}} x_i[k]$, para $k\in\mathbb{N}$.
 \end{itemize}
 
-\begin{lema}
+\begin{lema}\label{lema1}
 No puede haber dos transiciones consecutivas a estados de mayor número de individuos. Es decir, si $X[k]\,{\leq}\,X[k{+}1]$, entonces $X[k{+}2]\,{\leq}\, X[k{+}1]$.
 \end{lema}
 \begin{proof}
-Supongamos que $X[k]\,{\leq}\,X[k{+}1]$. Vamos a demostrar primero que $x_i[k{+}2]\,{\leq}\, x_i[k{+}1]$ para todo $i$. Tenemos sólo dos casos:
-
+Supongamos que $X[k]\,{\leq}\,X[k{+}1]$. Vamos a demostrar primero que para todo $i\,{\in}\,\mathcal{I}$ se tiene que $x_i[k{+}2]\,{\leq}\, x_i[k{+}1]$. Sea $i$ arbitrario y observe que $x_i[k{+}1]\,{\in}\,\{0, 1\}$. Consideremos cada caso por aparte:
+%
 \begin{itemize}
-\item Supongamos que $x_i[k{+}1]=0$. Luego, por la definición de $x_i[k{+}1]$ y la hipótesis se tiene que $u_i<X[k]\leq X[k{+}1]$ y, en consecuencia, $x_i[k{+}2]=0$. Entonces $x_i[k{+}2]\leq x_i[k{+}1]$.
-\item Supongamos que $x_i[k{+}1]=1$. Luego, como $x_i[k{+}2]\in\{0,1\}$, $x_i[k{+}2]\leq x_i[k{+}1]$.
+\item Supongamos que $x_i[k{+}1]=0$. Luego, por la definición de $x_i[k{+}1]$ (ver (c) arriba) y por la hipótesis se tiene que $u_i\,{<}\,X[k]\,{\leq}\,X[k{+}1]$. Es decir, $u_i\,{<}\,X[k{+}1]$ y, de nuevo por (c) aplicado a $k{+}2$, se tiene que $x_i[k{+}2]\,{=}\,0$. Por lo tanto $x_i[k{+}2]\,{\leq}\,x_i[k{+}1]$.
+\item Supongamos que $x_i[k{+}1]\,{=}\,1$. Como $x_i[k{+}2]\,{\in}\,\{0,1\}$, entonces $x_i[k{+}2]\leq x_i[k{+}1]$.
 \end{itemize}
+%
+Como $i$ es arbitrario, entonces $x_i[k{+}2]\,{\leq}\, x_i[k{+}1]$ para todo $i\,{\in}\,\mathcal{I}$. En consecuencia, $\sum_{i\in\mathcal{I}} x_i[k{+}2]\leq \sum_{i\in\mathcal{I}} x_i[k{+}1]$. Por lo tanto, por la definición de $X[k]$ se tiene que $X[k{+}2]\leq X[k{+}1]$.
+\end{proof}
 
-Entonces $\sum_i x_i[k{+}2]\leq \sum_i x_i[k{+}1]$. Por lo tanto, por la definición de $X[k]$ se tiene que $X[k{+}2]\leq X[k{+}1]$.
+\begin{lema}\label{lema2}
+No puede haber dos transiciones consecutivas a estados de menor número de individuos. Es decir, si $X[k{+}1]\,{\leq}\,X[k]$, entonces $X[k{+}1]\,{\leq}\, X[k{+}2]$.
+\end{lema}
+
+\begin{teor}
+No existen ciclos de longitud 3. Es decir, no existe $k\,{\in}\,\mathbb{N}$ tal que $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$ y $X[k{+}3]\,{=}\,X[k]$. 
+\end{teor}
+\begin{proof}
+Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$. Sea $k$ arbitrario y supongamos la hipótesis. Consideremos por aparte los casos $X[k]\,{<}\, X[k{+}1]$ y $X[k]\,{<}\, X[k{+}1]$:
+%
+\begin{itemize}
+\item Supongamos que $X[k]\,{<}\, X[k{+}1]$. Por el lema \ref{lema1} se sigue que $X[k{+}2]\,{\leq}\, X[k{+}1]$. Tenemos dos casos para comparar $X[k]$ y $X[k{+}2]$ (ya sabemos que, por hipótesis, ellos son distintos):
+	\begin{itemize}
+	\item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba supusimos que $X[k]\,{<}\, X[k{+}1]$, se sigue que $X[k{+}2]\,{<}\,X[k{+}3]\,{<}\,X[k{+1}]$. Esto contradice el lema 1. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+	\item Caso $X[k]\,{<}\,X[k{+}2]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba vimos que $X[k{+}2]\,{\leq}\, X[k{+}1]$, se sigue que $X[k{+}3]\,{<}\,X[k{+}2]\,{\leq}\,X[k{+1}]$. Esto contradice el lema \ref{lema2}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+	\end{itemize}
+	En cualquiera de estos dos casos, se sigue que $X[k{+}3]\,{\neq}\,X[k]$.
+
+\item Supongamos que $X[k{+}1]\,{<}\, X[k]$. El razonamiento aquí es similar al caso anterior, para concluir que $X[k{+}3]\,{\neq}\,X[k]$.
+\end{itemize}
+En cualqueir caso, $X[k{+}3]\,{\neq}\,X[k]$, y como $k$ es arbitrario, entonces concluimos que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$, para todo $k\,{\in}\,\mathbb{N}$.
 \end{proof}
 
 \end{document}
