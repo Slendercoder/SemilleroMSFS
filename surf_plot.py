@@ -46,6 +46,6 @@ ax.set_xlabel("X",fontsize=20)
 ax.set_ylabel("Y",fontsize=20)
 ax.set_zlabel("Z",fontsize=20)
 
-# plt.show()
-plt.savefig('fig.pdf')
+plt.show()
+# plt.savefig('fig.pdf')
 print('Done!')

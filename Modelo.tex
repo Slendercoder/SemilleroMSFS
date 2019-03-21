@@ -23,7 +23,7 @@ Definición de un EMMI:
 	\begin{enumerate}[label=(\alph*)]
 	\item Umbral $u_i\in[0,1]$.
 	\item Estado $x_i[k]\in\{0, 1\}$, para $k\in\mathbb{N}$.
-	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }X[k]\leq u_i\\ 0, & \mbox{ si } u_i < X[k]\end{cases}$
+	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }\frac{X[k]}{I}\leq u_i\\ 0, & \mbox{ si } u_i < \frac{X[k]}{I}\end{cases}$
 	\end{enumerate}
 
 \item Estado macro: $X[k]=\sum_{i\in\mathcal{I}} x_i[k]$, para $k\in\mathbb{N}$.
@@ -36,7 +36,7 @@ No puede haber dos transiciones consecutivas a estados de mayor número de indiv
 Supongamos que $X[k]\,{\leq}\,X[k{+}1]$. Vamos a demostrar primero que para todo $i\,{\in}\,\mathcal{I}$ se tiene que $x_i[k{+}2]\,{\leq}\, x_i[k{+}1]$. Sea $i$ arbitrario y observe que $x_i[k{+}1]\,{\in}\,\{0, 1\}$. Consideremos cada caso por aparte:
 %
 \begin{itemize}
-\item Supongamos que $x_i[k{+}1]=0$. Luego, por la definición de $x_i[k{+}1]$ (ver (c) arriba) y por la hipótesis se tiene que $u_i\,{<}\,X[k]\,{\leq}\,X[k{+}1]$. Es decir, $u_i\,{<}\,X[k{+}1]$ y, de nuevo por (c) aplicado a $k{+}2$, se tiene que $x_i[k{+}2]\,{=}\,0$. Por lo tanto $x_i[k{+}2]\,{\leq}\,x_i[k{+}1]$.
+\item Supongamos que $x_i[k{+}1]=0$. Luego, por la definición de $x_i[k{+}1]$ (ver (c) arriba) y por la hipótesis se tiene que $u_i\,{<}\,\frac{X[k]}{I}\,{\leq}\,\frac{X[k{+}1]}{I}$. Es decir, $u_i\,{<}\,\frac{X[k{+}1]}{I}$ y, de nuevo por (c) aplicado a $k{+}2$, se tiene que $x_i[k{+}2]\,{=}\,0$. Por lo tanto $x_i[k{+}2]\,{\leq}\,x_i[k{+}1]$.
 \item Supongamos que $x_i[k{+}1]\,{=}\,1$. Como $x_i[k{+}2]\,{\in}\,\{0,1\}$, entonces $x_i[k{+}2]\leq x_i[k{+}1]$.
 \end{itemize}
 %
@@ -64,6 +64,24 @@ Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}
 \item Supongamos que $X[k{+}1]\,{<}\, X[k]$. El razonamiento aquí es similar al caso anterior, para concluir que $X[k{+}3]\,{\neq}\,X[k]$.
 \end{itemize}
 En cualqueir caso, $X[k{+}3]\,{\neq}\,X[k]$, y como $k$ es arbitrario, entonces concluimos que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$, para todo $k\,{\in}\,\mathbb{N}$.
+\end{proof}
+
+\begin{teor}
+Existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$ si, y sólo si, existe un $p\in[0,1]$ tal que
+\[p*I=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|\] 
+\end{teor}
+\begin{proof}
+\begin{itemize}
+\item[$\Rightarrow$)] Supongamos que existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$ y sea $p=\frac{X[k]}{I}$. Observe que $p\in[0,1]$ y que $p*I=\frac{X[k]}{I}*I=X[k]=X[k{+}1]$. Además, observe que:
+\begin{align*}
+p*I&=X[k{+}1]\\
+&=|\{i\,{\in}\,\mathcal{I}:\frac{X[k]}{I}\leq u_i\}|\\
+&=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|\qquad\mbox{(por definición de $p$)}\\
+\end{align*}
+\end{itemize}
+
+\item[$\Leftarrow$)] Supongamos que existe un $p\in[0,1]$ tal que $p*I=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|$ 
+
 \end{proof}
 
 \end{document}
