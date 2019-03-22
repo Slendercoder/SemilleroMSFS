@@ -5,6 +5,7 @@
 
 \newtheorem{teor}{Teorema}
 \newtheorem{lema}{Lema}
+\newtheorem{obs}{Observación}
 
 \begin{document}
 
@@ -29,6 +30,23 @@ Definición de un EMMI:
 \item Estado macro: $X[k]=\sum_{i\in\mathcal{I}} x_i[k]$, para $k\in\mathbb{N}$.
 \end{itemize}
 
+\begin{itemize}
+\item $\bm{u}[k]= (u_1[k],\ldots,u_I[k])$
+\item $\bm{x}[k]= (x_1[k],\ldots,x_I[k])$ (estado micro)
+\end{itemize}
+
+\begin{obs}
+La dinámica del sistema es determinista, es decir, si $\bm{x}[k]=\bm{x}[l]$, entonces $\bm{x}[k{+}1]=\bm{x}[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
+\end{obs}
+
+\begin{obs}
+Si $X[k]=X[l]$, entonces $X[k{+}1]=X[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
+\end{obs}
+
+\begin{obs}
+$X[k{+}1]=|\{i\,{\in}\,\mathcal{I}:\frac{X[k]}{I}\leq u_i\}|$
+\end{obs}
+
 \begin{lema}\label{lema1}
 No puede haber dos transiciones consecutivas a estados de mayor número de individuos. Es decir, si $X[k]\,{\leq}\,X[k{+}1]$, entonces $X[k{+}2]\,{\leq}\, X[k{+}1]$.
 \end{lema}
@@ -51,12 +69,12 @@ No puede haber dos transiciones consecutivas a estados de menor número de indiv
 No existen ciclos de longitud 3. Es decir, no existe $k\,{\in}\,\mathbb{N}$ tal que $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$ y $X[k{+}3]\,{=}\,X[k]$. 
 \end{teor}
 \begin{proof}
-Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$. Sea $k$ arbitrario y supongamos la hipótesis. Consideremos por aparte los casos $X[k]\,{<}\, X[k{+}1]$ y $X[k]\,{<}\, X[k{+}1]$:
+Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$. Sea $k$ arbitrario y supongamos la hipótesis. Consideremos por aparte los casos $X[k]\,{<}\, X[k{+}1]$ y $X[k]\,{>}\, X[k{+}1]$:
 %
 \begin{itemize}
 \item Supongamos que $X[k]\,{<}\, X[k{+}1]$. Por el lema \ref{lema1} se sigue que $X[k{+}2]\,{\leq}\, X[k{+}1]$. Tenemos dos casos para comparar $X[k]$ y $X[k{+}2]$ (ya sabemos que, por hipótesis, ellos son distintos):
 	\begin{itemize}
-	\item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba supusimos que $X[k]\,{<}\, X[k{+}1]$, se sigue que $X[k{+}2]\,{<}\,X[k{+}3]\,{<}\,X[k{+1}]$. Esto contradice el lema 1. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+	\item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Por la observación 2 se sigue que $X[k{+}4]\,{=}\,X[k{+}1]$. Entonces, como arriba supusimos que $X[k]\,{<}\, X[k{+}1]$, se sigue que $X[k{+}2]\,{<}\,X[k{+}3]\,{<}\,X[k{+4}]$. Esto contradice el lema 1. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
 	\item Caso $X[k]\,{<}\,X[k{+}2]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba vimos que $X[k{+}2]\,{\leq}\, X[k{+}1]$, se sigue que $X[k{+}3]\,{<}\,X[k{+}2]\,{\leq}\,X[k{+1}]$. Esto contradice el lema \ref{lema2}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
 	\end{itemize}
 	En cualquiera de estos dos casos, se sigue que $X[k{+}3]\,{\neq}\,X[k]$.
@@ -66,23 +84,58 @@ Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}
 En cualqueir caso, $X[k{+}3]\,{\neq}\,X[k]$, y como $k$ es arbitrario, entonces concluimos que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$, para todo $k\,{\in}\,\mathbb{N}$.
 \end{proof}
 
+\begin{lema}\label{lema3}
+Si $X[k]\,{<}\,X[l]\,{<}\,X[k{+}1]$ y $X[l]\,{<}\,X[l{+}1]$, entonces $X[l{+}1]\,{<}\,X[k{+}1]$.
+\end{lema}
+
+\begin{proof}
+Supongamos que:
+\begin{itemize}
+\item $X[k]\,{<}\,X[l]$
+\item $X[l]\,{<}\,X[l{+}1]$
+\item $X[l]\,{<}\,X[k{+}1]$
+\end{itemize}
+
+\[
+x_i[l{+}1]\leq x_i[k{+}1]
+\]
+
+\[
+u_i<X[k]<X[l]
+\]
+
+\[
+u_i<X[l]
+\]
+
+\[
+x_i[l+1]=0
+\]
+
+
+\end{proof}
+
 \begin{teor}
-Existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$ si, y sólo si, existe un $p\in[0,1]$ tal que
+Si existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$, entonces existe un $p\in[0,1]$ tal que
 \[p*I=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|\] 
 \end{teor}
 \begin{proof}
-\begin{itemize}
-\item[$\Rightarrow$)] Supongamos que existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$ y sea $p=\frac{X[k]}{I}$. Observe que $p\in[0,1]$ y que $p*I=\frac{X[k]}{I}*I=X[k]=X[k{+}1]$. Además, observe que:
+
+Supongamos que existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$ y sea $p=\frac{X[k]}{I}$. Observe que $p\in[0,1]$ y que $p*I=\frac{X[k]}{I}*I=X[k]=X[k{+}1]$. Además, observe que:
 \begin{align*}
 p*I&=X[k{+}1]\\
-&=|\{i\,{\in}\,\mathcal{I}:\frac{X[k]}{I}\leq u_i\}|\\
-&=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|\qquad\mbox{(por definición de $p$)}\\
+&=|\{i\,{\in}\,\mathcal{I}:\frac{X[k]}{I}\leq u_i\}| &\qquad\mbox{(por la observación 3)}\\
+&=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}| &\qquad\mbox{(por definición de $p$)}\\
 \end{align*}
-\end{itemize}
-
-\item[$\Leftarrow$)] Supongamos que existe un $p\in[0,1]$ tal que $p*I=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|$ 
-
 \end{proof}
+
+\begin{obs}
+Si un sistema no tiene un estado estable, entonces para ningún $p\in[0,1]$ se cumple la igualdad.
+\end{obs}
+
+\begin{obs}
+Para que se cumpla la igualdad, $p*I$ debe ser entero, luego consideramos los casos $p=\frac{j}{I}$, para $j\in\{1,\ldots,I\}$.
+\end{obs}
 
 \end{document}
 
