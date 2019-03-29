@@ -12,7 +12,8 @@
 
 Motivación: 
 \begin{itemize}
-\item Sistema de control de temperatura de un panal de abejas. Sistema de recolección de alimento de un hormiguero. Interacción entre las acciones de los individuos y un ``estado macro'' (temperatura, rastros de feromonas en el entorno, etc.).
+\item Interacción entre las acciones de los individuos y un ``estado macro'' (temperatura, rastros de feromonas en el entorno, etc.). Ejemplos: sistema de control de temperatura de un panal de abejas; sistema de recolección de alimento de un hormiguero.
+\item Ontología del estado macro: sencillamente otro estado de cosas (se abstrae su naturaleza y se considera sólo su función).
 \item Desarrollar un sistema formal sencillo para  estudiar la interacción elemental entre el estado micro (p.ej., la colección de los estados de las abejas en un instante determinado), y un estado macro (p.ej., la temperatura del panal) (Elementary Micro Macro Interaction, EMMI). 
 \item Comparación con los autómatas celulares.
 \end{itemize}
@@ -36,19 +37,21 @@ Definición de un EMMI:
 \item $\bm{x}[k]= (x_1[k],\ldots,x_I[k])$ (estado micro)
 \end{itemize}
 
-\begin{obs}
-La dinámica del sistema es determinista, es decir, si $\bm{x}[k]=\bm{x}[l]$, entonces $\bm{x}[k{+}1]=\bm{x}[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
-\end{obs}
+\centerline{2 EJEMPLOS CON POCOS AGENTES}
 
 \begin{obs}
-Si $X[k]=X[l]$, entonces $X[k{+}1]=X[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
+La dinámica de los estados micro es determinista, es decir, si $\bm{x}[k]=\bm{x}[l]$, entonces $\bm{x}[k{+}1]=\bm{x}[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
+\end{obs}
+
+\begin{obs}\label{obs:macro}
+La dinámica de los estados macro es determinista, es decir, si $X[k]=X[l]$, entonces $X[k{+}1]=X[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
 \end{obs}
 
 \begin{obs}
 $X[k{+}1]=|\{i\,{\in}\,\mathcal{I}:\frac{X[k]}{I}\leq u_i\}|$
 \end{obs}
 
-\begin{lema}[Mortal]
+\begin{lema}[Dinámica fundamental]\label{lema:mortal}
 Si $X[k]\,{\leq}\,X[l]$, entonces $X[l{+}1]\,{\leq}\,X[k{+}1]$.
 \end{lema}
 
@@ -63,18 +66,18 @@ Supongamos que $X[k]\,{\leq}\,X[l]$. Vamos a demostrar primero que para todo $i\
 Como $i$ es arbitrario, entonces $x_i[l{+}1]\,{\leq}\, x_i[k{+}1]$ para todo $i\,{\in}\,\mathcal{I}$. En consecuencia, $\sum_{i\in\mathcal{I}} x_i[l{+}1]\leq \sum_{i\in\mathcal{I}} x_i[k{+}1]$. Por lo tanto, por la definición de $X[k]$ se tiene que $X[l{+}1]\leq X[k{+}1]$.
 \end{proof}
 
-\begin{coro}\label{lema1}
+\begin{coro}\label{coro:ascen}
 No puede haber dos transiciones consecutivas a estados de mayor número de individuos. Es decir, si $X[k]\,{\leq}\,X[k{+}1]$, entonces $X[k{+}2]\,{\leq}\, X[k{+}1]$.
 \end{coro}
 \begin{proof}
-Considere el lema mortal con $l=k+1$.
+Considere el lema \ref{lema:mortal} con $l=k+1$.
 \end{proof}
 
-\begin{coro}\label{lema2}
+\begin{coro}\label{coro:descen}
 No puede haber dos transiciones consecutivas a estados de menor número de individuos. Es decir, si $X[k{+}1]\,{\leq}\,X[k]$, entonces $X[k{+}1]\,{\leq}\, X[k{+}2]$.
 \end{coro}
 \begin{proof}
-Considere el lema mortal con $l=k-1$.
+Considere el lema \ref{lema:mortal} con $l=k-1$.
 \end{proof}
 
 \begin{teor}
@@ -84,16 +87,20 @@ No existen ciclos de longitud 3. Es decir, no existe $k\,{\in}\,\mathbb{N}$ tal 
 Para todo $k\,{\in}\,\mathbb{N}$ vamos a demostrar que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$. Sea $k$ arbitrario y supongamos la hipótesis. Consideremos por aparte los casos $X[k]\,{<}\, X[k{+}1]$ y $X[k]\,{>}\, X[k{+}1]$:
 %
 \begin{itemize}
-\item Supongamos que $X[k]\,{<}\, X[k{+}1]$. Por el lema \ref{lema1} se sigue que $X[k{+}2]\,{\leq}\, X[k{+}1]$. Tenemos dos casos para comparar $X[k]$ y $X[k{+}2]$ (ya sabemos que, por hipótesis, ellos son distintos):
+\item Supongamos que $X[k]\,{<}\, X[k{+}1]$. Por el lema \ref{lema:mortal} se sigue que $X[k{+}2]\,{\leq}\, X[k{+}1]$. Tenemos dos casos para comparar $X[k]$ y $X[k{+}2]$ (ya sabemos que, por hipótesis, ellos son distintos):
 	\begin{itemize}
-	\item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Por la observación 2 se sigue que $X[k{+}4]\,{=}\,X[k{+}1]$. Entonces, como arriba supusimos que $X[k]\,{<}\, X[k{+}1]$, se sigue que $X[k{+}2]\,{<}\,X[k{+}3]\,{<}\,X[k{+4}]$. Esto contradice el lema 1. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
-	\item Caso $X[k]\,{<}\,X[k{+}2]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba vimos que $X[k{+}2]\,{\leq}\, X[k{+}1]$, se sigue que $X[k{+}3]\,{<}\,X[k{+}2]\,{\leq}\,X[k{+1}]$. Esto contradice el lema \ref{lema2}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+	\item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Por la observación \ref{obs:macro} se sigue que $X[k{+}4]\,{=}\,X[k{+}1]$. Entonces, como arriba supusimos que $X[k]\,{<}\, X[k{+}1]$, se sigue que $X[k{+}2]\,{<}\,X[k{+}3]\,{<}\,X[k{+4}]$. Esto contradice el corolario \ref{coro:ascen}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+	\item Caso $X[k]\,{<}\,X[k{+}2]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces, como arriba vimos que $X[k{+}2]\,{\leq}\, X[k{+}1]$, se sigue que $X[k{+}3]\,{<}\,X[k{+}2]\,{\leq}\,X[k{+1}]$. Esto contradice el corolario \ref{coro:descen}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
 	\end{itemize}
 	En cualquiera de estos dos casos, se sigue que $X[k{+}3]\,{\neq}\,X[k]$.
-
-\item Supongamos que $X[k{+}1]\,{<}\, X[k]$. El razonamiento aquí es similar al caso anterior, para concluir que $X[k{+}3]\,{\neq}\,X[k]$.
+	
+\item Ahora supongamos que $X[k{+}1]\,{<}\, X[k]$. Por el lema \ref{lema:mortal} se sigue que $X[k{+}1]\,{\leq}\, X[k{+}2]$. Tenemos dos casos para comparar $X[k]$ y $X[k{+}2]$ (ya sabemos que, por hipótesis, ellos son distintos):
+    \begin{itemize}
+        \item Caso $X[k{+}2]\,{<}\,X[k]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Entonces como arriba vimos que $X[k{+}1]\,{\leq}\, X[k{+}2]$, se sigue que $X[k{+}1]\,{\leq}\,X[k{+}2]\,{<}\,X[k{+}3]$. Esto contradice el corolario \ref{coro:descen}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+        \item Caso $X[k]\,{<}\,X[k{+}2]$. Supongamos por absurdo que $X[k{+}3]\,{=}\,X[k]$. Por la observación \ref{obs:macro} se sigue que $X[k{+}4]\,{=}\,X[k{+}1]$. Entonces, como arriba supusimos que $X[k+1]\,{<}\, X[k]$, se sigue que $X[k{+}4]\,{<}\,X[k{+}3]\,{<}\,X[k{+}2]$. Esto contradice el corolario \ref{coro:descen}. Concluimos que $X[k{+}3]\,{\neq}\,X[k]$.
+    \end{itemize}
 \end{itemize}
-En cualqueir caso, $X[k{+}3]\,{\neq}\,X[k]$, y como $k$ es arbitrario, entonces concluimos que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$, para todo $k\,{\in}\,\mathbb{N}$.
+En cualquier caso, $X[k{+}3]\,{\neq}\,X[k]$, y como $k$ es arbitrario, entonces concluimos que si $X[k]\,{\neq}\, X[k{+}1]\,{\neq}\, X[k{+}2]$, entonces $X[k{+}3]\,{\neq}\,X[k]$, para todo $k\,{\in}\,\mathbb{N}$.
 \end{proof}
 
 \begin{lema}\label{lema3}
@@ -101,10 +108,17 @@ Si $X[k]\,{<}\,X[l]\,{<}\,X[l{+}1]$, entonces $X[k]\,{<}\,X[l]\,{<}\,X[l{+}1]\,{
 \end{lema}
 
 \begin{proof}
-Como $X[k]\,{<}\,X[l]$ se sigue por el lema mortal que $X[l{+}1]\,{\leq}\,X[k{+}1]$, ademas como $X[l]\,{<}\,X[l{+}1]$ entonces $X[k]\,{<}\,X[l]\,{<}\,X[l{+}1]\,{\leq}\,X[k{+}1]$
+Como $X[k]\,{<}\,X[l]$ se sigue por el lema \ref{lema:mortal} que $X[l{+}1]\,{\leq}\,X[k{+}1]$, ademas como $X[l]\,{<}\,X[l{+}1]$ entonces $X[k]\,{<}\,X[l]\,{<}\,X[l{+}1]\,{\leq}\,X[k{+}1]$
 \end{proof}
 
-\begin{teor}
+\centerline{SI EL REBOTE SE CIERRA, SE SIGUE CERRANDO} 
+\centerline{SI EL REBOTE SE ABRE, SE SIGUE ABRIENDO}
+
+\begin{coro}\label{coro:ciclos}
+No existen ciclos de longitud mayor o igual a 3.
+\end{coro}
+
+\begin{teor}[Punto fijo]
 Si existe un $k\,{\in}\,\mathbb{N}$ tal que $X[k]=X[k{+}1]$, entonces existe un $p\in[0,1]$ tal que
 \begin{equation}\label{eq:p}
 p*I=|\{i\,{\in}\,\mathcal{I}:p\leq u_i\}|
@@ -120,6 +134,14 @@ p*I&=X[k{+}1]\\
 \end{align*}
 Por lo tanto existe un $p\in[0,1]$ que cumple la igualdad (\ref{eq:p}).
 \end{proof}
+
+\begin{teor}[Unicidad del punto fijo]
+Si $p_1,p_2\in[0,1]$ y ambos cumplen la ecuación \ref{eq:p}, entonces $p_1=p_2$.
+\end{teor}
+\begin{proof}
+Supongamos que $p_1,p_2\in[0,1]$ y que ambos cumplen la ecuación \ref{eq:p}. Supongamos por absurdo que $p_1<p_2$. Sea $i\in\{i\,{\in}\,\mathcal{I}:p_2\leq u_i\}$, entonces $p_2\leq u_i$ y por hipótesis se sigue que $p_1\leq u_i$. Luego $i\in\{i\,{\in}\,\mathcal{I}:p_1\leq u_i\}$ y en consecuencia, $\{i\,{\in}\,\mathcal{I}:p_2\leq u_i\}\subseteq \{i\,{\in}\,\mathcal{I}:p_1\leq u_i\}$. Por lo tanto, $|\{i\,{\in}\,\mathcal{I}:p_2\leq u_i\}|\leq |\{i\,{\in}\,\mathcal{I}:p_1\leq u_i\}|$. Por la ecuación \ref{eq:p} se sigue que $p_2*I\leq p_1*I$ y luego $p_2\leq p_1$ ($\to\leftarrow$). Por reducción al absurdo hemos demostrado que si $p_1,p_2\in[0,1]$ y ambos cumplen la ecuación \ref{eq:p}, entonces $p_1=p_2$.
+\end{proof}
+
 
 \begin{obs}
 Si para ningún $p\in[0,1]$ se cumple la igualdad (\ref{eq:p}), entonces el sistema no tiene un estado estable.
