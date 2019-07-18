@@ -129,5 +129,23 @@ Si para ningún $p\in[0,1]$ se cumple la igualdad (\ref{eq:p}), entonces el sist
 Si se cumpla la igualdad (\ref{eq:p}), $p*I$ debe ser entero, luego $p=\frac{j}{I}$, para algún $j\in\{1,\ldots,I\}$.
 \end{obs}
 
+A continuación se definira la función de utilidad de cada agente:
+
+\begin{equation}
+    U_i(t)= Ingreso_i(t)-Costo_i(t)
+\end{equation}
+\begin{equation}
+    Costo_i[t]=\begin{cases} 1, & \mbox{ si }x_i(t)=1\\ 0, & \mbox{ en otro caso  }\end{cases}
+\end{equation}
+\begin{equation}
+    Ingreso_i[t]=\begin{cases} 2, & \mbox{ si  }x_i(t)=1 \quad y \quad x_i(t)\leq N \\ 0, & \mbox{ en otro caso  }\end{cases}
+\end{equation}
+
+La respectiva regla de aprendizaje es:
+\begin{equation}
+    {\Delta}u_i[t]=\begin{cases} 0, & \mbox{ si  }U_i(t)=1 \\ 0.1(u_i-X[t]), & \mbox{ si }U_i(t)=0\\-0.1(u_i-X[t]), & \mbox{ si }U_i(t)=-1 \end{cases}
+\end{equation}
+
+
 \end{document}
 
