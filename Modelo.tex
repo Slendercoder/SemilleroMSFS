@@ -25,16 +25,31 @@ Definición de un EMMI:
 	\begin{enumerate}[label=(\alph*)]
 	\item Umbral $u_i\in[0,1]$.
 	\item Estado $x_i[k]\in\{0, 1\}$, para $k\in\mathbb{N}$.
-	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }\frac{X[k]}{I}\leq u_i\\ 0, & \mbox{ si } u_i < \frac{X[k]}{I}\end{cases}$
+	\item Regla  $x_i[k+1]=\begin{cases} 1, & \mbox{ si }X[k]\leq u_i\\ 0, & \mbox{ si } u_i < X[k]\end{cases}$
 	\end{enumerate}
 
-\item Canal de comunicación: $X[k]=\sum_{i\in\mathcal{I}} x_i[k]$, para $k\in\mathbb{N}$.
+\item Canal de comunicación: $X[k]=\frac{1}{I}\sum_{i\in\mathcal{I}} x_i[k]$, para $k\in\mathbb{N}$.
 \end{itemize}
 
 \begin{itemize}
 \item $\bm{u}[k]= (u_1[k],\ldots,u_I[k])$
 \item $\bm{x}[k]= (x_1[k],\ldots,x_I[k])$ (estado micro)
 \end{itemize}
+
+A continuación se definirá la función de utilidad de cada agente:
+
+\begin{equation}
+    Ingreso_i[t]=\begin{cases} 
+1, & \mbox{ si  }x_i(t)=1 \quad \& \quad u_i\leq X[t] \\ 
+-1, & \mbox{ si  }x_i(t)=1 \quad \& \quad u_i> X[t] \\ 
+0, & \mbox{ en otro caso  }
+\end{cases}
+\end{equation}
+
+La respectiva regla de aprendizaje es:
+\begin{equation}
+    {\Delta}u_i[t]=\begin{cases} 0, & \mbox{ si  }U_i(t)=1 \\ -0.1(u_i-X[t]), & \mbox{ si }U_i(t)=0\\0.1(u_i-X[t]), & \mbox{ si }U_i(t)=-1 \end{cases}
+\end{equation}
 
 \begin{obs}
 La dinámica del sistema es determinista, es decir, si $\bm{x}[k]=\bm{x}[l]$, entonces $\bm{x}[k{+}1]=\bm{x}[l{+}1]$, para todo $k,l\,{\in}\,\mathbb{N}$.
@@ -128,23 +143,6 @@ Si para ningún $p\in[0,1]$ se cumple la igualdad (\ref{eq:p}), entonces el sist
 \begin{obs}
 Si se cumpla la igualdad (\ref{eq:p}), $p*I$ debe ser entero, luego $p=\frac{j}{I}$, para algún $j\in\{1,\ldots,I\}$.
 \end{obs}
-
-A continuación se definira la función de utilidad de cada agente:
-
-\begin{equation}
-    U_i(t)= Ingreso_i(t)-Costo_i(t)
-\end{equation}
-\begin{equation}
-    Costo_i[t]=\begin{cases} 1, & \mbox{ si }x_i(t)=1\\ 0, & \mbox{ en otro caso  }\end{cases}
-\end{equation}
-\begin{equation}
-    Ingreso_i[t]=\begin{cases} 2, & \mbox{ si  }x_i(t)=1 \quad y \quad x_i(t)\leq N \\ 0, & \mbox{ en otro caso  }\end{cases}
-\end{equation}
-
-La respectiva regla de aprendizaje es:
-\begin{equation}
-    {\Delta}u_i[t]=\begin{cases} 0, & \mbox{ si  }U_i(t)=1 \\ 0.1(u_i-X[t]), & \mbox{ si }U_i(t)=0\\-0.1(u_i-X[t]), & \mbox{ si }U_i(t)=-1 \end{cases}
-\end{equation}
 
 
 \end{document}

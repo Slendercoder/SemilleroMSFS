@@ -2,137 +2,70 @@ import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
 
-class agente:
-    def __init__(self,Estado,Umbral):
-        self.estado = Estado
-        self.umbral = Umbral
-    def decision(self,Macro):
-        if Macro >= self.umbral:
-            self.estado = 0
-        else:
-            self.estado = 1
+estrategias = [
+{(0,0): 0, (1,1): 0, (1, -1): 0},
+{(0,0): 0, (1,1): 0, (1, -1): 1},
+{(0,0): 0, (1,1): 1, (1, -1): 0},
+{(0,0): 0, (1,1): 1, (1, -1): 1},
+{(0,0): 1, (1,1): 0, (1, -1): 0},
+{(0,0): 1, (1,1): 0, (1, -1): 1},
+{(0,0): 1, (1,1): 1, (1, -1): 0},
+{(0,0): 1, (1,1): 1, (1, -1): 1},
+]
 
-def calcula_macro(agentes):
-    a = [i.estado for i in agentes]
+class agente:
+    def __init__(self, Estado, score, acumulado, estrategia):
+        self.estado = Estado
+        self.score = score
+        self.acumulado = acumulado
+        self.estrategia = estrategia
+
+def calcula_medio(agentes):
+    a = [x.estado for x in agentes]
     return np.sum(a)/len(a)
 
-def crearAgentesAleatorios(media, sd, Num_Agentes):
-    Agentes = []
-    for i in range(Num_Agentes):
-        estado = rd.randint(0,1)
-        centro = rd.normalvariate(media,sd)
-        while centro < 0 or centro > 1:
-            centro = rd.normalvariate(media,sd)
-        a = agente(estado, centro)
-        Agentes.append(a)
+def juegoCoqueto(agentes):
+    X = calcula_medio(agentes)
+    for a in agentes:
+        if a.estado == 1:
+            if X > 0.5:
+                a.score = -1
+            else:
+                a.score = 1
+        else:
+            a.score = 0
 
-    return Agentes
+        a.acumulado += a.score
 
-def simDesv(Agentes, Num_Iteraciones):
+Ganacias = [0]*8
+Num_Iteraciones = 10
 
-    # Estados = []
-    Macro = []
-    for i in range(Num_Iteraciones):
-        Macro.append(calcula_macro(Agentes))
-        # print(Macro[-1])
-        for a in Agentes:
-            a.decision(Macro[-1])
+for i in estrategias:
+    print(i)
+    for j in estrategias:
+        for k in estrategias:
+            Agentes = []
+            # print('k', k)
+            a = agente(rd.randint(0, 1), 0, 0, i)
+            Agentes.append(a)
+            a = agente(rd.randint(0, 1), 0, 0, j)
+            Agentes.append(a)
+            a = agente(rd.randint(0, 1), 0, 0, k)
+            Agentes.append(a)
 
-        # B = [Agentes[0], Agentes[110]]
-        # B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
-        # Estados.append([a.estado for a in B])
+            for T in range(Num_Iteraciones):
+                juegoCoqueto(Agentes)
+                for a in Agentes:
+                    a.estado = a.estrategia[(a.estado, a.score)]
 
-    # return Macro, Estados
-    return Macro
+            for a in Agentes:
+                l = estrategias.index(a.estrategia)
+                Ganacias[l] += a.acumulado
 
-######################################
-# Comienzo ejecucion
-######################################
+# Ganacias = [0, 1, 2, 3, 4, 3, 2, 1]
 
-Num_Agentes = 10
-Num_Iteraciones = 100
-transiente = 10
-# Macro = []
-# media = 0.5
-# desviacion = 0
-# Agentes = [agente(rd.randint(0,1), rd.normalvariate(media, desviacion)) for i in range(Num_Agentes)]
-# Estados = [i.estado for i in Agentes]
-# Agentes = []
+print(Ganacias)
 
-# a = agente(0, 0)
-# Agentes.append(a)
-# a = agente(0, 0.1)
-# Agentes.append(a)
-# a = agente(1, 0.2)
-# Agentes.append(a)
-# a = agente(0, 0.3)
-# Agentes.append(a)
-# a = agente(1, 0.4)
-# Agentes.append(a)
-# a = agente(0, 0.5)
-# Agentes.append(a)
-# a = agente(1, 0.6)
-# Agentes.append(a)
-# a = agente(0, 0.7)
-# Agentes.append(a)
-# a = agente(1, 0.8)
-# Agentes.append(a)
-# a = agente(0, 0.9)
-# Agentes.append(a)
-# a = agente(0, 1)
-# Agentes.append(a)
-
-# Agentes = []
-#
-# for i in range(100):
-#     Agentes.append(agente(rd.randint(0,1), 0.2))
-#
-# for i in range(400):
-#     Agentes.append(agente(rd.randint(0,1), 0.6))
-
-# for i in range(400):
-#     Agentes.append(agente(rd.randint(0,1), 0.6))
-#
-# for i in range(100):
-#     Agentes.append(agente(rd.randint(0,1), 0.8))
-
-# B = [Agentes[0], Agentes[410], Agentes[510], Agentes[910]]
-# B = [Agentes[0], Agentes[110]]
-# estAux = [a.estado for a in B]
-# Macro, Estados = simDesv(Agentes, Num_Iteraciones)
-# Estados.insert(0, estAux)
-
-# for i in Estados:
-#     print(i)
-
-# Macros = {}
-
-# Macros[0] = Macro
-
-medias = [i/10 for i in range(10)]
-desviaciones = [i/10 for i in range(5)]
-Macros = {}
-mediasMacro = {}
-desvEstsMacro = {}
-for m in medias:
-    for sd in desviaciones:
-        Agentes = crearAgentesAleatorios(m, sd, Num_Agentes)
-        Macro = simDesv(Agentes, Num_Iteraciones)
-        Macros[(m, sd)] = Macro[transiente:]
-        mediasMacro[(m, sd)] = np.mean(Macro)
-        desvEstsMacro[(m, sd)] = np.std(Macro)
-
-# plt.hist(Estados)
-# plt.savefig("Histograma.png")
-# print(Macros)
-
-
-
-for key in Macros:
-    plt.plot(range(Num_Iteraciones), Macros[key], label = key)
-
-plt.legend()
-
-plt.ylim([0,1])
+plt.bar(range(8), Ganacias)
 
 plt.show()
