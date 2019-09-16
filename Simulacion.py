@@ -89,6 +89,7 @@ def tallaFinita(max):
 Num_Iteraciones = 100
 porEstrategia = []
 combEstrat = []
+combInicales = []
 Ganancias = [0]*3
 print(estrategias)
 contador = 0
@@ -116,18 +117,20 @@ for j in estrategias:
                 Ganancias[i] += Agentes[i].acumulado
 
             contador += 1
-            print('contador', contador)
-            print('Ganancias')
-            print(Ganancias)
+            # print('contador', contador)
+            # print('Ganancias')
+            # print(Ganancias)
             porEstrategia.append(Ganancias)
             c = (2,estrategias.index(j),estrategias.index(k))
-            print('combinacion estrategias')
-            print(c)
+            # print('combinacion estrategias')
+            # print(c)
             combEstrat.append(c)
+            combInicales.append(p)
 
 data = pd.DataFrame(porEstrategia)
 print('Dataframe')
 data['combEstrat'] = combEstrat
+data['combIniciales'] = combInicales
 print(data[:3])
 
 archivo = 'combinaciones_estrategias.csv'
