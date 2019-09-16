@@ -43,7 +43,7 @@ def juegoCoqueto(agentes):
         a.acumulado += a.score
 
 def todasCombinaciones(Num_Iteraciones):
-    Ganacias = [0]*8
+    Ganancias = [0]*8
     for i in estrategias:
         for j in estrategias:
             for k in estrategias:
@@ -65,25 +65,76 @@ def todasCombinaciones(Num_Iteraciones):
 
                     for a in Agentes:
                         l = estrategias.index(a.estrategia)
-                        Ganacias[l] += a.acumulado
+                        Ganancias[l] += a.acumulado
 
-    return Ganacias
+    return Ganancias
 
-tallaFinita = []
-for i in range(1, 10):
-    print('Corriendo con', i*10, 'iteraciones')
-    Ganacias = todasCombinaciones(10*i)
-    print(Ganacias)
-    tallaFinita.append(Ganacias)
+def tallaFinita(max):
+    tallaFinita = []
+    for i in range(1, max):
+        print('Corriendo con', i*10, 'iteraciones')
+        Ganancias = todasCombinaciones(10*i)
+        print(Ganancias)
+        suma = np.sum([abs(x) for x in Ganancias])
+        tallaFinita.append([x/suma for x in Ganancias])
 
-data = pd.DataFrame(tallaFinita)
-data = data.transpose()
+    data = pd.DataFrame(tallaFinita)
+    data = data.transpose()
+    print(data[:3])
+
+    archivo = 'tallaFinita.csv'
+    data.to_csv(archivo, index=False)
+    print("Data saved to ", archivo)
+
+Num_Iteraciones = 100
+porEstrategia = []
+combEstrat = []
+Ganancias = [0]*3
+print(estrategias)
+contador = 0
+for j in estrategias:
+    for k in estrategias:
+        combinaciones = [(r, s, t) for r in range(2) for s in range(2) for t in range(2)]
+        for p in combinaciones:
+            Agentes = []
+            # print('k', k)
+            a = agente(p[0], 0, 0, estrategias[2])
+            Agentes.append(a)
+            a = agente(p[1], 0, 0, j)
+            Agentes.append(a)
+            a = agente(p[2], 0, 0, k)
+            Agentes.append(a)
+
+            for T in range(Num_Iteraciones):
+                # print('T', T)
+                juegoCoqueto(Agentes)
+                for a in Agentes:
+                    # print(a.estrategia)
+                    a.estado = a.estrategia[(a.estado, a.score)]
+
+            for i in range(len(Agentes)):
+                Ganancias[i] += Agentes[i].acumulado
+
+            contador += 1
+            print('contador', contador)
+            print('Ganancias')
+            print(Ganancias)
+            porEstrategia.append(Ganancias)
+            c = (2,estrategias.index(j),estrategias.index(k))
+            print('combinacion estrategias')
+            print(c)
+            combEstrat.append(c)
+
+data = pd.DataFrame(porEstrategia)
+print('Dataframe')
+data['combEstrat'] = combEstrat
 print(data[:3])
 
-archivo = 'tallaFinita.csv'
+archivo = 'combinaciones_estrategias.csv'
 data.to_csv(archivo, index=False)
 print("Data saved to ", archivo)
 
-plt.bar(range(8), Ganacias)
-
-plt.show()
+#
+# plt.bar(range(8), Ganancias)
+#
+# plt.show()

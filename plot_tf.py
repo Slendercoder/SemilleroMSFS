@@ -1,14 +1,12 @@
 import matplotlib.pyplot as plt
 
-
-
 data = []
 Inp = open("tallaFinita.csv", "r")
 count = 0
 for line in Inp:
-    v = list(map(int, line.split(',')))
+    v = list(map(float, line.split(',')))
     print(v)
-    if count > 0: 
+    if count > 0:
         data.append(v)
     count += 1
 Inp.close()
