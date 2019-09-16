@@ -1,0 +1,9 @@
+import matplotlib.pyplot as plt
+
+
+data = []
+Inp = open("tallaFinita.csv", "r")
+for line in Inp:
+    print(line)
+
+Inp.close()
