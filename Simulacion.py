@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # VARIABLES GLOBALES
 ################################
 
-estrategias = [
+politicas = [
 {(0,0): 0, (1,1): 0, (1, -1): 0},
 {(0,0): 0, (1,1): 0, (1, -1): 1},
 {(0,0): 0, (1,1): 1, (1, -1): 0},
@@ -44,9 +44,9 @@ def juegoCoqueto(agentes):
 
 def todasCombinaciones(Num_Iteraciones):
     Ganancias = [0]*8
-    for i in estrategias:
-        for j in estrategias:
-            for k in estrategias:
+    for i in politicas:
+        for j in politicas:
+            for k in politicas:
                 combinaciones = [(r, s, t) for r in range(2) for s in range(2) for t in range(2)]
                 for p in combinaciones:
                     Agentes = []
@@ -64,7 +64,7 @@ def todasCombinaciones(Num_Iteraciones):
                             a.estado = a.estrategia[(a.estado, a.score)]
 
                     for a in Agentes:
-                        l = estrategias.index(a.estrategia)
+                        l = politicas.index(a.estrategia)
                         Ganancias[l] += a.acumulado
 
     return Ganancias
@@ -86,20 +86,22 @@ def tallaFinita(max):
     data.to_csv(archivo, index=False)
     print("Data saved to ", archivo)
 
+
+
 Num_Iteraciones = 100
 porEstrategia = []
 combEstrat = []
 combInicales = []
 Ganancias = [0]*3
-print(estrategias)
+print(politicas)
 contador = 0
-for j in estrategias:
-    for k in estrategias:
+for j in politicas:
+    for k in politicas:
         combinaciones = [(r, s, t) for r in range(2) for s in range(2) for t in range(2)]
         for p in combinaciones:
             Agentes = []
             # print('k', k)
-            a = agente(p[0], 0, 0, estrategias[2])
+            a = agente(p[0], 0, 0, politicas[2])
             Agentes.append(a)
             a = agente(p[1], 0, 0, j)
             Agentes.append(a)
@@ -121,8 +123,8 @@ for j in estrategias:
             # print('Ganancias')
             # print(Ganancias)
             porEstrategia.append(Ganancias)
-            c = (2,estrategias.index(j),estrategias.index(k))
-            # print('combinacion estrategias')
+            c = (2,politicas.index(j),politicas.index(k))
+            # print('combinacion politicas')
             # print(c)
             combEstrat.append(c)
             combInicales.append(p)
@@ -133,7 +135,7 @@ data['combEstrat'] = combEstrat
 data['combIniciales'] = combInicales
 print(data[:3])
 
-archivo = 'combinaciones_estrategias.csv'
+archivo = 'combinaciones_politicas.csv'
 data.to_csv(archivo, index=False)
 print("Data saved to ", archivo)
 

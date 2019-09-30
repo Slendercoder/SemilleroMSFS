@@ -11,15 +11,20 @@ for line in Inp:
     count += 1
 Inp.close()
 
-x = [i for i in range(len(data[0]))]
+x = [i*10 for i in range(len(data[0]))]
 
 print(data)
 
 fig = plt.figure()
 
 ax = fig.add_subplot(1,1,1)
+ax.set_xlabel('No. de iteraciones')
+ax.set_ylabel('Score (%)')
 
 for i in range(8):
-    ax.plot(x, data[i])
+    a = str(i)
+    ax.plot(x, data[i], label=a)
+
+ax.legend()
 
 plt.show()
