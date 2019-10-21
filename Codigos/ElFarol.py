@@ -13,7 +13,7 @@ class agente:
 def crear_agentes_aleatorios(Num_agentes):
     Agentes = []
     for i in range(Num_agentes):
-        Agentes.append(agente([rd.randint(0,1)], [0], [rd.randint(0,7)]), [])
+        Agentes.append(agente([rd.randint(0,1)], [0], [rd.randint(0,7)], []))
 
     return Agentes
 
@@ -53,6 +53,7 @@ def juega_ronda(Agentes, politicas):
 
         polit = politicas[a.estrategia[-1]]
         a.estado.append(polit[(a.estado[-1], a.score[-1])])
+        a.estrategia.append(a.estrategia[-1])
 
     return Agentes
 
