@@ -4,15 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class agente:
-    def __init__(self, estados, scores, estrategias):
+    def __init__(self, estados, scores, estrategias, vecinos):
         self.estado = estados # lista
         self.score = scores # lista
         self.estrategia = estrategias # lista
+        self.vecinos = vecinos
 
 def crear_agentes_aleatorios(Num_agentes):
     Agentes = []
     for i in range(Num_agentes):
-        Agentes.append(agente([rd.randint(0,1)], [0], [rd.randint(0,7)]))
+        Agentes.append(agente([rd.randint(0,1)], [0], [rd.randint(0,7)]), [])
 
     return Agentes
 
@@ -30,11 +31,10 @@ def crear_politicas():
     return politicas
 
 def crear_red(Agentes):
-    red = {}
     for i in range(len(Agentes)):
-        red[i] = [x for x in range(len(Agentes)) if x!=i]
+        Agentes[i].vecinos = [x for x in range(len(Agentes)) if x!=i]
 
-    return red
+    return Agentes
 
 def calcula_medio(agentes):
     a = [x.estado for x in agentes]
