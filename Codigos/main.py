@@ -1,30 +1,31 @@
 import ElFarol as EF
 
-Num_agentes = 2
-Num_iteraciones = 10
+Num_agentes = 9
+Num_iteraciones = 100
 TIPO_RED = 0 # COMPLETA
 
 agentes = EF.crear_agentes_aleatorios(Num_agentes)
+print('Ronda: 0',end=" ")
+print('Estados:', [x.estado[-1] for x in agentes],end=" ")
+print('Score:', [x.score[-1] for x in agentes],end=" ")
+print('Politicas:', [x.politica[-1] for x in agentes])
 # print(agentes)
 
 politicas = EF.crear_politicas()
 
 # CARLOS
-red = EF.crear_red(agentes)
+agentes = EF.crear_red(agentes)
 
-# YA
-agentes = EF.juega_ronda(agentes, politicas)
-# print(agentes)
+EF.leer_red(agentes)
 
-# ESTEBAN
-agentes = EF.agentes_aprenden(agentes, red)
+for i in range(Num_iteraciones):
+    agentes = EF.juega_ronda(agentes, politicas)
+    print('\nRonda:', str(i+1),end=" ")
+    print('Estados:', [x.estado[-1] for x in agentes],end=" ")
+    print('Score:', [x.score[-1] for x in agentes],end=" ")
+    agentes = EF.agentes_aprenden(agentes)
+    print('Politica:', [x.politica[-1] for x in agentes])
 
-print([x.score[-1] for x in agentes])
-
-# # MARIA JOSE
-# SIMULACION(Num_Iteraciones)
-#     RONDA
-#     APRENDIZAJE
 
 # data = EF.crea_dataframe_agentes(agentes, Num_iteraciones)
 
