@@ -6,10 +6,10 @@ import sys
 from triangular import Triangular
 
 # No. of nodes
-N = 1024
+N = 10
 
 #link probability
-p = 1
+p = 0.5
 
 #Link counter
 lnkcnt = [0 for i in range(N)]
@@ -26,7 +26,7 @@ for i in range(N-1):
         pair = [min(i,j),max(i,j)]
         if random.random() < p:
             lnkcnt[i] += 1
-            lnkcnt[j] += 1 
+            lnkcnt[j] += 1
             #print(pair)
             #	    links.set_element(i,j,1)
             llinks.append(pair)
@@ -43,7 +43,7 @@ ff.close()
 hist = [0 for i in range(N)]
 for i in lnkcnt:
     hist[i] += 1
-    
+
 hf = open('deg_hist.dat', 'w')
 for i in range(N):
     hf.write(str(i)+' '+str(hist[i])+'\n')

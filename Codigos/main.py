@@ -1,41 +1,40 @@
 import ElFarol as EF
+import redes
 
-Num_agentes = 9
+Num_agentes = 10
 Num_iteraciones = 100
 TIPO_RED = 0 # COMPLETA
+PARS = [Num_agentes, 1]
+No_exper = 30
+inicial = True
 
-agentes = EF.crear_agentes_aleatorios(Num_agentes)
-print('Ronda: 0',end=" ")
-print('Estados:', [x.estado[-1] for x in agentes],end=" ")
-print('Score:', [x.score[-1] for x in agentes],end=" ")
-print('Politicas:', [x.politica[-1] for x in agentes])
-# print(agentes)
+print('********************************************************')
+print(u'*            Parámetros de la simulacion               *')
+print('********************************************************')
+print('Num_agentes:', Num_agentes)
+print('Num_iteraciones:', Num_iteraciones)
+print('TIPO_RED:', TIPO_RED)
+print('PARS:', PARS)
+print('No_exper:', No_exper)
 
-politicas = EF.crear_politicas()
+with open('Identificador' + str(TIPO_RED) + '.txt', 'r') as f:
+    identificador = int(f.readline())
 
-# CARLOS
-agentes = EF.crear_red(agentes)
+f.close()
 
-EF.leer_red(agentes)
+# print(identificador)
 
-for i in range(Num_iteraciones):
-    agentes = EF.juega_ronda(agentes, politicas)
-    print('\nRonda:', str(i+1),end=" ")
-    print('Estados:', [x.estado[-1] for x in agentes],end=" ")
-    print('Score:', [x.score[-1] for x in agentes],end=" ")
-    agentes = EF.agentes_aprenden(agentes)
-    print('Politica:', [x.politica[-1] for x in agentes])
+identificador += 1
+EF.simulacion(Num_agentes, Num_iteraciones, TIPO_RED, PARS, inicial, identificador)
 
+for N in range(No_exper - 1):
 
-# data = EF.crea_dataframe_agentes(agentes, Num_iteraciones)
+    identificador += 1
+    EF.simulacion(Num_agentes, Num_iteraciones, TIPO_RED, PARS, False, identificador)
 
-# EF.guardar(data, 'agentes.csv')
+with open('Identificador' + str(TIPO_RED) + '.txt', 'w') as f:
+    f.write(str(identificador))
 
-# # EDGAR
-# HISTOGRAMA_USO, GRAFICA_USO_VS_TIEMPO, GRAFICA_PUNTAJE = ANALISIS_ESTRATEGIAS(AGENTES)
-#
-# # ROJAS
-# GRAFICA_ASISTENTES_BAR_VS_RONDA = ANALISIS_ASISTENCIA(AGENTES)
-#
-# # MIGUEL
-# GRAFICA_PUNTAJE_VS_RONDA, GRAFICA_ESTRATEGIA_VS_RONDA = ANALISIS_AGENTES(AGENTES)
+f.close()
+
+print('Listo!')
