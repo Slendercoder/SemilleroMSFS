@@ -76,7 +76,7 @@ def calcula_medio(agentes):
     a = [x.estado[-1] for x in agentes]
     return np.sum(a)/len(a)
 
-def juega_ronda(Agentes, politicas):
+def juega_ronda(Agentes, politicas, UMBRAL):
     for a in Agentes:
         polit = politicas[a.politica[-1]]
         a.estado.append(polit[(a.estado[-1], a.score[-1])])
@@ -85,7 +85,7 @@ def juega_ronda(Agentes, politicas):
     # print('Medio', X)
     for a in Agentes:
         if a.estado[-1] == 1:
-            if X > 0.5:
+            if X > UMBRAL:
                 a.score.append(-1)
             else:
                 a.score.append(1)
@@ -161,7 +161,7 @@ def guardar(dataFrame, archivo, inicial):
 def cargar(archivo):
     data = pd.read_csv(archivo)
 
-def simulacion(Num_agentes, Num_iteraciones, TIPO_RED, PARS, inicial, N):
+def simulacion(Num_agentes, Num_iteraciones, UMBRAL, TIPO_RED, PARS, inicial, N):
 
     agentes = crear_agentes_aleatorios(Num_agentes)
     # print('***********************************************')
@@ -189,7 +189,7 @@ def simulacion(Num_agentes, Num_iteraciones, TIPO_RED, PARS, inicial, N):
     # print('* ITERACIONES *')
     # print('***********************************************')
     for i in range(Num_iteraciones):
-        agentes = juega_ronda(agentes, politicas)
+        agentes = juega_ronda(agentes, politicas, UMBRAL)
         # print('\nRonda:', str(i+1),end=" ")
         # print('Estados:', [x.estado[-1] for x in agentes],end=" ")
         # print('Score:', [x.score[-1] for x in agentes],end=" ")
