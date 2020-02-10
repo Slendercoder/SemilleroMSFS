@@ -181,6 +181,10 @@ def simulacion(Num_agentes, Num_iteraciones, UMBRAL, TIPO_RED, PARS, inicial, N)
         # print('Parametros red:', PARS)
         # print('---------')
         redes.random_graph(*PARS)
+    elif TIPO_RED == 1:
+        redes.small_world(*PARS)
+    elif TIPO_RED == 2:
+        redes.scale_free(PARS[0], PARS[0]/4, PARS[0]/8, PARS[1]*0.6, PARS[1])
 
     # Leyendo red de archivo
     leer_red(agentes)
