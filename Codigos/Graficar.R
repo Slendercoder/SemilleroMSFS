@@ -4,8 +4,10 @@ library(dplyr)
 library(plotly)
 
 dfPuntajes = read.csv('agentes.csv')
+dfPuntajes$Estado = as.numeric(dfPuntajes$Estado)
 head(dfPuntajes)
 
+dfPuntajes = dfPuntajes[dfPuntajes$Identificador ==1100, ]
 ##################################################################################################
 # Dibuja proporcion de asistencia por ronda
 ##################################################################################################
@@ -58,7 +60,7 @@ dUso<- dfPuntajes %>% # the names of the new data frame and the data frame to be
 
 
 dUso = count(dUso,Politica, wt = NULL, sort = FALSE, name = "n") # Conteo de rondas por politicas vs ronda
-dUso$Politica <- as.character(dUso$Politica) # Convirtiendo el valor númerico de politica a categorico/String
+dUso$Politica <- as.character(dUso$Politica) # Convirtiendo el valor n?merico de politica a categorico/String
 
 #head(dUso)
 

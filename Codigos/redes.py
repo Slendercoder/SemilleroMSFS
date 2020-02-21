@@ -2,7 +2,7 @@
 
 from numpy import random
 import sys, math
-from triangular import Triangular
+#from triangular import Triangular
 
 def random_graph(N, p):
     ## Create a random conectivity matrix in which each edge is included with
