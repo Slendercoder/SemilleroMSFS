@@ -4,7 +4,10 @@ library(dplyr)
 library(plotly)
 
 dfPuntajes = read.csv('agentes.csv')
-dfPuntajes$Estado = as.numeric(dfPuntajes$Estado)
+dfPuntajes$Estado = as.numeric(levels(dfPuntajes$Estado))[dfPuntajes$Estado]
+dfPuntajes$Ronda = as.numeric(levels(dfPuntajes$Ronda))[dfPuntajes$Ronda]
+
+typeof(dfPuntajes$Estado)
 head(dfPuntajes)
 
 dfPuntajes = dfPuntajes[dfPuntajes$Identificador ==1100, ]
@@ -56,13 +59,13 @@ p1
 ##################################################################################################
 
 dUso<- dfPuntajes %>% # the names of the new data frame and the data frame to be summarised
-  dplyr::group_by(Identificador, Ronda,Politica) # Agrupando por grupo,Identificador,Politica
+  dplyr::group_by(Identificador, Ronda,Politica)# Agrupando por grupo,Identificador,Politica
 
 
-dUso = count(dUso,Politica, wt = NULL, sort = FALSE, name = "n") # Conteo de rondas por politicas vs ronda
+dUso = count(dUso,Politica,name = "n") # Conteo de rondas por politicas vs ronda
 dUso$Politica <- as.character(dUso$Politica) # Convirtiendo el valor n?merico de politica a categorico/String
 
-#head(dUso)
+head(dUso)
 
 p1 <- ggplot(data = dUso, aes(x=Ronda, y=n, group=Politica, colour=Politica)) + 
   geom_line(alpha=0.4)+labs(y="Uso de Politica",title="Uso Vs Ronda")
@@ -82,3 +85,4 @@ p2 <- plot_ly(data = dUso2, x=~Ronda,y=~n,color=~Politica) %>%
       )
 
 p2
+
