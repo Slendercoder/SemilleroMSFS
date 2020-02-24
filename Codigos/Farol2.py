@@ -191,6 +191,10 @@ def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
         # print('Politica:', [x.politica[-1] for x in agentes])
 
     data = crea_dataframe_agentes(agentes, Num_iteraciones, PARS, N)
+    print(data[1:3])
+    data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
+    data['Consistencia'] = data.apply(lambda x : 1 if x['Politica']==x['Politica_lag'] else 0, axis=1)
+    print(data[1:3])
 
     # print(data[:10])
 
