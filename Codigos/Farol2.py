@@ -97,16 +97,22 @@ def juega_ronda(Agentes, politicas, UMBRAL):
 def agentes_aprenden(Agentes):
     #Los agentes copian la politica del ganador de la Ronda
     for agente in Agentes:
+        print(Agentes.index(agente))
         maximo=agente.score[-1]
         maximo_vecino=Agentes.index(agente)
         # print('Vencinos', agente.vecinos)
+        print(agente.vecinos)
         for index_vecino in agente.vecinos:
             if((Agentes[index_vecino].score[-1])>(maximo)):
+                print('Hay cambio')
+                print('Puntaje anterior',maximo)
                 maximo=Agentes[index_vecino].score[-1]
+                print('Puntaje anterior vecino',maximo)
                 maximo_vecino=index_vecino
+            else: print('No hay cambio')
         # print('Agente',Agentes.index(agente),'aprende de',maximo_vecino)
         # print('Politica nueva',Agentes[maximo_vecino].politica[-1])
-        agente.politica.append(agente.politica[-1])
+        agente.politica.append(Agentes[maximo_vecino].politica[-1])
     return Agentes
 
 def crea_dataframe_agentes(Agentes, Num_iteraciones, PARAMETROS, N):
