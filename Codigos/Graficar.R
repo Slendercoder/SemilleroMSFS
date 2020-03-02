@@ -6,6 +6,8 @@ library(plotly)
 dfPuntajes = read.csv('agentes.csv')
 dfPuntajes$Estado = as.numeric(levels(dfPuntajes$Estado))[dfPuntajes$Estado]
 dfPuntajes$Ronda = as.numeric(levels(dfPuntajes$Ronda))[dfPuntajes$Ronda]
+dfPuntajes$Politica = lapply(dfPuntajes$Politica, function(x) factor(x))
+dfPuntajes$Politica = factor(dfPuntajes$Politica)
 
 typeof(dfPuntajes$Estado)
 head(dfPuntajes)
@@ -86,3 +88,35 @@ p2 <- plot_ly(data = dUso2, x=~Ronda,y=~n,color=~Politica) %>%
 
 p2
 
+##################################################################################################
+# Dibuja GRAFICA INDIVIDUAL => MIGUEL
+##################################################################################################
+
+dfPuntajes2 = dfPuntajes[complete.cases(dfPuntajes),]
+p2 <- ggplot(dfPuntajes2,aes(x=Puntaje,y=Consistencia))+geom_point(alpha = 0.5)
+p2
+
+##################################################################################################
+# Dibuja GRAFICA PUNTAJE POR RONDA => MIGUEL
+##################################################################################################
+dfpuntaje1 <- dfPuntajes  %>%
+  group_by(Ronda) %>%   # the grouping variable
+  dplyr::summarise(Puntaje_Promedio = mean(Puntaje, na.rm=TRUE),
+                   sd_RD = sd(Puntaje, na.rm=TRUE))  # calculates the mean of each group)
+
+dfpuntaje1
+
+p1 <- ggplot(data = dfpuntaje1, aes(x=Ronda, y=Puntaje_Promedio)) + 
+  geom_line(size=0.9) +
+  geom_ribbon(aes(ymin = Puntaje_Promedio - sd_RD,
+                  ymax = Puntaje_Promedio + sd_RD), alpha = 0.2) +
+  #  ylim(c(-0.1,1.1)) +
+  labs(color = "Identificador") +
+  theme_bw()
+
+p1
+
+
+##################################################################################################
+# Dibuja GRAFICA PUNTAJE POR RONDA => MIGUEL
+##################################################################################################
