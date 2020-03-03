@@ -1,18 +1,25 @@
 library(ggplot2)
 library(Rmisc)
 library(dplyr)
-library(plotly)
+#library(plotly)
+library("gridExtra")
+
 
 dfPuntajes = read.csv('agentes.csv')
-dfPuntajes$Estado = as.numeric(levels(dfPuntajes$Estado))[dfPuntajes$Estado]
-dfPuntajes$Ronda = as.numeric(levels(dfPuntajes$Ronda))[dfPuntajes$Ronda]
-dfPuntajes$Politica = lapply(dfPuntajes$Politica, function(x) factor(x))
-dfPuntajes$Politica = factor(dfPuntajes$Politica)
+#dfPuntajes = read.csv('alatorio.csv')
+dfPuntajes = read.csv('coordinado.csv')
+dfPuntajes = read.csv('nocoordinado.csv')
 
-typeof(dfPuntajes$Estado)
-head(dfPuntajes)
 
-dfPuntajes = dfPuntajes[dfPuntajes$Identificador ==1100, ]
+#dfPuntajes$Estado = as.numeric(levels(dfPuntajes$Estado))[dfPuntajes$Estado]
+#dfPuntajes$Ronda = as.numeric(levels(dfPuntajes$Ronda))[dfPuntajes$Ronda]
+#dfPuntajes$Politica = lapply(dfPuntajes$Politica, function(x) factor(x))
+#dfPuntajes$Politica = factor(dfPuntajes$Politica)
+
+#typeof(dfPuntajes$Estado)
+#head(dfPuntajes)
+
+#dfPuntajes = dfPuntajes[dfPuntajes$Identificador ==1100, ]
 ##################################################################################################
 # Dibuja proporcion de asistencia por ronda
 ##################################################################################################
@@ -30,7 +37,7 @@ p1 <- ggplot(data = df_summary, aes(x=Ronda, y=Asistencia)) +
                   ymax = Asistencia + sd_RD), alpha = 0.2) +
 #  ylim(c(-0.1,1.1)) +
   labs(color = "Identificador") +
-  theme_bw()
+  theme_bw()+ggtitle("Asistencia Por Ronda")
 
 p1
 
@@ -46,15 +53,15 @@ df_summary <- dfPuntajes %>% # the names of the new data frame and the data fram
                    n_RD = n()) # calculates the standard error of each group
 head(df_summary)
 
-p1 <- ggplot(data = df_summary, aes(x=Ronda, y=Asistencia, group=Identificador, color=Identificador)) + 
+p2 <- ggplot(data = df_summary, aes(x=Ronda, y=Asistencia)) + 
   geom_line(size=0.9) +
   #  geom_ribbon(aes(ymin = Asistencia - sd_RD,
   #                  ymax = Asistencia + sd_RD), alpha = 0.2) +
   #  ylim(c(-0.1,1.1)) +
   labs(color = "Identificador") +
-  theme_bw()
+  theme_bw()+ggtitle("Politica vs Ronda")
 
-p1
+p2
 
 ##################################################################################################
 # Dibuja GRAFICA_USO-Politica_VS_RONDA => MIGUEL
@@ -69,10 +76,10 @@ dUso$Politica <- as.character(dUso$Politica) # Convirtiendo el valor n?merico de
 
 head(dUso)
 
-p1 <- ggplot(data = dUso, aes(x=Ronda, y=n, group=Politica, colour=Politica)) + 
-  geom_line(alpha=0.4)+labs(y="Uso de Politica",title="Uso Vs Ronda")
+p3 <- ggplot(data = dUso, aes(x=Ronda, y=n, group=Politica, colour=Politica)) + 
+  geom_line(alpha=0.4)+labs(y="Uso de Politica",title="Uso Vs Ronda")+ggtitle("Politica vs Ronda")
 
-p1
+p3
 
 #------------------GRAFICA INTERACTIVA -------------------------#
 
@@ -93,30 +100,32 @@ p2
 ##################################################################################################
 
 dfPuntajes2 = dfPuntajes[complete.cases(dfPuntajes),]
-p2 <- ggplot(dfPuntajes2,aes(x=Puntaje,y=Consistencia))+geom_point(alpha = 0.5)
-p2
+p4 <- ggplot(dfPuntajes2,aes(x=Puntaje,y=Consistencia))+geom_point(alpha = 0.5)+ggtitle("Consistencia individual de agentes")
+p4
 
 ##################################################################################################
 # Dibuja GRAFICA PUNTAJE POR RONDA => MIGUEL
 ##################################################################################################
 dfpuntaje1 <- dfPuntajes  %>%
   group_by(Ronda) %>%   # the grouping variable
-  dplyr::summarise(Puntaje_Promedio = mean(Puntaje, na.rm=TRUE),
+  dplyr::summarise(Puntaje_Promedio = mean(cumsum(Puntaje), na.rm=TRUE),
                    sd_RD = sd(Puntaje, na.rm=TRUE))  # calculates the mean of each group)
-
+cumsum(dfPuntajes$Puntaje)
 dfpuntaje1
 
-p1 <- ggplot(data = dfpuntaje1, aes(x=Ronda, y=Puntaje_Promedio)) + 
+p5 <- ggplot(data = dfpuntaje1, aes(x=Ronda, y=Puntaje_Promedio)) + 
   geom_line(size=0.9) +
   geom_ribbon(aes(ymin = Puntaje_Promedio - sd_RD,
                   ymax = Puntaje_Promedio + sd_RD), alpha = 0.2) +
   #  ylim(c(-0.1,1.1)) +
   labs(color = "Identificador") +
-  theme_bw()
+  theme_bw()+ggtitle("Puntaje Acumulado vs Ronda")
 
-p1
+p5
 
 
 ##################################################################################################
-# Dibuja GRAFICA PUNTAJE POR RONDA => MIGUEL
+# GRAFICAS UNIDAS
 ##################################################################################################
+
+grid.arrange(p1, p3,p4,p5, nrow = 2,top="No Coordinado")
