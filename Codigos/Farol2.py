@@ -31,16 +31,31 @@ def crear_agentes_aleatorios(Num_agentes):
 
     return Agentes
 
+def crear_agentes_no_aleatorios():
+    Agentes = []
+    Agentes.append(agente([1],[],[4],[]))
+    Agentes.append(agente([1],[],[4],[]))
+    X = calcula_medio(Agentes)
+    for a in Agentes:
+        if a.estado[-1] == 1:
+            if X > 0.5:
+                a.score.append(-1)
+            else:
+                a.score.append(1)
+        else:
+            a.score.append(0)
+    return Agentes
+
 def crear_politicas():
     politicas = [
-    {(0,0): 0, (1,1): 0, (1, -1): 0},
-    {(0,0): 0, (1,1): 0, (1, -1): 1},
-    {(0,0): 0, (1,1): 1, (1, -1): 0},
-    {(0,0): 0, (1,1): 1, (1, -1): 1},
-    {(0,0): 1, (1,1): 0, (1, -1): 0},
-    {(0,0): 1, (1,1): 0, (1, -1): 1},
-    {(0,0): 1, (1,1): 1, (1, -1): 0},
-    {(0,0): 1, (1,1): 1, (1, -1): 1},
+    {(0,0): 0, (1,1): 0, (1, -1): 0}, #0
+    {(0,0): 0, (1,1): 0, (1, -1): 1}, #1
+    {(0,0): 0, (1,1): 1, (1, -1): 0}, #2
+    {(0,0): 0, (1,1): 1, (1, -1): 1}, #3
+    {(0,0): 1, (1,1): 0, (1, -1): 0}, #4
+    {(0,0): 1, (1,1): 0, (1, -1): 1}, #5
+    {(0,0): 1, (1,1): 1, (1, -1): 0}, #6
+    {(0,0): 1, (1,1): 1, (1, -1): 1}, #7
     ]
     return politicas
 
@@ -117,6 +132,7 @@ def agentes_aprenden(Agentes):
 
 def crea_dataframe_agentes(Agentes, Num_iteraciones, PARAMETROS, N):
 
+    print()
     muestra = []
     agente = []
     ronda = []
@@ -169,7 +185,7 @@ def cargar(archivo):
 
 def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
 
-    agentes = crear_agentes_aleatorios(Num_agentes)
+    agentes = crear_agentes_no_aleatorios()
     # print('***********************************************')
     # print('* PREPARACION *')
     # print('***********************************************')

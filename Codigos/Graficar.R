@@ -5,10 +5,9 @@ library(dplyr)
 library("gridExtra")
 
 
-dfPuntajes = read.csv('agentes.csv')
-#dfPuntajes = read.csv('alatorio.csv')
-dfPuntajes = read.csv('coordinado.csv')
-dfPuntajes = read.csv('nocoordinado.csv')
+dfPuntajes = read.csv('./Juegos/Mejor_2.csv')
+dfPuntajes = read.csv('./Juegos/Peor_2.csv')
+dfPuntajes = read.csv('./Juegos/Aleatorio_2.csv')
 
 
 #dfPuntajes$Estado = as.numeric(levels(dfPuntajes$Estado))[dfPuntajes$Estado]
@@ -83,17 +82,17 @@ p3
 
 #------------------GRAFICA INTERACTIVA -------------------------#
 
-dUso2 = data.frame(dUso) #Convirtiendo a dataframe para que plotly lo lea sin problemas
-
-p2 <- plot_ly(data = dUso2, x=~Ronda,y=~n,color=~Politica) %>%
-  add_lines() %>% 
-    layout(
-      title ="Uso vs Ronda",
-        xaxis=list(title="Ronda"),
-        yaxis=list(title="Uso")
-      )
-
-p2
+# dUso2 = data.frame(dUso) #Convirtiendo a dataframe para que plotly lo lea sin problemas
+# 
+# p2 <- plot_ly(data = dUso2, x=~Ronda,y=~n,color=~Politica) %>%
+#   add_lines() %>% 
+#     layout(
+#       title ="Uso vs Ronda",
+#         xaxis=list(title="Ronda"),
+#         yaxis=list(title="Uso")
+#       )
+# 
+# p2
 
 ##################################################################################################
 # Dibuja GRAFICA INDIVIDUAL => MIGUEL
@@ -107,13 +106,17 @@ p4
 # Dibuja GRAFICA PUNTAJE POR RONDA => MIGUEL
 ##################################################################################################
 dfpuntaje1 <- dfPuntajes  %>%
-  group_by(Ronda) %>%   # the grouping variable
-  dplyr::summarise(Puntaje_Promedio = mean(cumsum(Puntaje), na.rm=TRUE),
-                   sd_RD = sd(Puntaje, na.rm=TRUE))  # calculates the mean of each group)
-cumsum(dfPuntajes$Puntaje)
-dfpuntaje1
+  group_by(Agente) %>%   # the grouping variable, no es necesario agrupar por ronda por que ya lo hace intrinsecamente
+  dplyr::mutate(Puntaje_Promedio = lag(cummean(Puntaje),n=0))# saca la media de los lags reportados
 
-p5 <- ggplot(data = dfpuntaje1, aes(x=Ronda, y=Puntaje_Promedio)) + 
+dfpuntaje11 <- dfpuntaje1  %>%
+  group_by(Ronda) %>% 
+  dplyr::summarise(sd_RD = sd(Puntaje_Promedio),
+    Puntaje_Promedio = mean(Puntaje_Promedio)) 
+
+dfpuntaje11 
+
+p5 <- ggplot(data = dfpuntaje11, aes(x=Ronda, y=Puntaje_Promedio)) + 
   geom_line(size=0.9) +
   geom_ribbon(aes(ymin = Puntaje_Promedio - sd_RD,
                   ymax = Puntaje_Promedio + sd_RD), alpha = 0.2) +
@@ -129,3 +132,4 @@ p5
 ##################################################################################################
 
 grid.arrange(p1, p3,p4,p5, nrow = 2,top="No Coordinado")
+
