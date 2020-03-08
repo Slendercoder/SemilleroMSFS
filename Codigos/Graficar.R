@@ -121,7 +121,7 @@ p5 <- ggplot(data = dfpuntaje11, aes(x=Ronda, y=Puntaje_Promedio)) +
   geom_ribbon(aes(ymin = Puntaje_Promedio - sd_RD,
                   ymax = Puntaje_Promedio + sd_RD), alpha = 0.2) +
   #  ylim(c(-0.1,1.1)) +
-  labs(color = "Identificador") +
+  labs(y="Puntaje Acumulado") +
   theme_bw()+ggtitle("Puntaje Acumulado vs Ronda")
 
 p5
@@ -131,5 +131,11 @@ p5
 # GRAFICAS UNIDAS
 ##################################################################################################
 
-grid.arrange(p1, p3,p4,p5, nrow = 2,top="No Coordinado")
+###Información descriptiva para poner en las graficas
+Rondas = length(levels(factor(dfPuntajes$Ronda)))
+num_agentes = length(levels(factor(dfPuntajes$Agente)))
+
+bottom_label = paste("Rondas :",Rondas," Numero de Agentes :",num_agentes)
+
+grid.arrange(p1, p3,p4,p5, nrow = 2,top="No Coordinado",bottom=bottom_label)
 
