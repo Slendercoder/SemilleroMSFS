@@ -3,6 +3,7 @@ import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
 import redes
+import math
 
 class agente:
     def __init__(self, estados, scores, politicas, vecinos):
@@ -34,7 +35,10 @@ def crear_agentes_aleatorios(Num_agentes):
 def crear_agentes_no_aleatorios():
     Agentes = []
     Agentes.append(agente([1],[],[4],[]))
+    Agentes.append(agente([0],[],[4],[]))
     Agentes.append(agente([1],[],[4],[]))
+    Agentes.append(agente([0],[],[4],[]))
+    Agentes.append(agente([0],[],[0],[]))
     X = calcula_medio(Agentes)
     for a in Agentes:
         if a.estado[-1] == 1:
@@ -183,6 +187,14 @@ def guardar(dataFrame, archivo, inicial):
 def cargar(archivo):
     data = pd.read_csv(archivo)
 
+def encontrar_consistencia(politica, politica_lag):
+    print(politica_lag, type(politica_lag))
+    if math.isnan(politica_lag):
+        return np.nan
+    elif politica == politica_lag:
+        return 1
+    else: return 0
+
 def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
 
     agentes = crear_agentes_no_aleatorios()
@@ -215,7 +227,7 @@ def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
     data = crea_dataframe_agentes(agentes, Num_iteraciones, PARS, N)
     print(data[1:3])
     data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
-    data['Consistencia'] = data.apply(lambda x : 1 if x['Politica']==x['Politica_lag'] else 0, axis=1)
+    data['Consistencia'] = data.apply(lambda x : encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
     print(data[1:3])
 
     # print(data[:10])

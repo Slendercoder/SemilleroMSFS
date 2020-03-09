@@ -4,7 +4,7 @@ import redes
 Num_agentes = 2
 Num_iteraciones = 10
 TIPO_RED = 0 # COMPLETA
-PARS = [Num_agentes, 1]
+PARS = [Num_agentes, 0]
 No_exper = 1
 inicial = True
 UMBRAL = 0.5
