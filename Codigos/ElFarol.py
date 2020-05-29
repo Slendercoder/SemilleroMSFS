@@ -31,6 +31,12 @@ def crear_agentes_aleatorios(Num_agentes):
 
     return Agentes
 
+Las políticas representan la toma de decisiones de los agentes de la ronda n a la ronda n+1. En este caso, una decisión consiste en qué estrategia seguir en la ronda n+1. Para ello, cada agente consulta tanto la estrategia de la ronda n, como la recompensa obtenida.
+
+En nuestro modelo, sólo hay tres posibles combinaciones de estrategias y recompensas, a saber:
+
+(no ir a El Farol, recompensa 0) (ir a El Farol, recompensa 1) (ir a El Farol, recompensa -1)
+
 def crear_politicas():
     politicas = [
     {(0,0): 0, (1,1): 0, (1, -1): 0},
