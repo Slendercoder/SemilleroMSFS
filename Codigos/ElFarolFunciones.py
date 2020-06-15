@@ -121,7 +121,7 @@ def cargar(archivo):
     data = pd.read_csv(archivo)
 
 def encontrar_consistencia(politica, politica_lag):
-    print(politica_lag, type(politica_lag))
+    #print(politica_lag, type(politica_lag))
     if np.isnan(politica_lag):
         return np.nan
     elif politica == politica_lag:
