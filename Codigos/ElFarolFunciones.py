@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import random as rd
 
 class agente:
     def __init__(self, estados, scores, politicas, vecinos):
@@ -141,7 +142,7 @@ def crear_agentes_aleatorios(Num_agentes):
         Agentes.append(agente([rd.randint(0,1)], [], [rd.randint(0,7)], []))
 
     X = calcula_medio(Agentes)
-    
+
     for a in Agentes:
         if a.estado[-1] == 1:
             if X > 0.5:
