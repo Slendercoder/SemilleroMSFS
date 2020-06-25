@@ -27,5 +27,3 @@ def create_graph(N,type,k,printg):
         edge = e.tuple
         ff.write(str(edge[0])+" "+str(edge[1])+"\n")
     ff.close()
-
-    ig.plot(g,"ElFarol.pdf")
