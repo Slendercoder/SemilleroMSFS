@@ -2,7 +2,7 @@
 import igraph as ig
 
 def create_graph(N,type,k,printg):
-    
+
     if type == "Full":
         g = ig.Graph.Full(N)
     elif type == "Kregular":
@@ -27,3 +27,7 @@ def create_graph(N,type,k,printg):
         edge = e.tuple
         ff.write(str(edge[0])+" "+str(edge[1])+"\n")
     ff.close()
+
+    ig.plot(g,type+'.eps')
+
+    print("yes")
