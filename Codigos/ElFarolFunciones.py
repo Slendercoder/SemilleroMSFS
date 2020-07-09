@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import random as rd
+import os
 
 class agente:
     def __init__(self, estados, scores, politicas, vecinos):
@@ -120,9 +121,12 @@ def crea_dataframe_agentes(Agentes, Num_iteraciones, PARAMETROS, N):
     return data
 
 def guardar(dataFrame, archivo, inicial):
-    # dataFrame.to_csv(archivo, index=False)
-    with open(archivo, 'a') as f:
-        dataFrame.to_csv(f, header=inicial, index=False)
+    if inicial:
+        os.remove(archivo)
+        dataFrame.to_csv(archivo, index = False)
+    else:
+        with open(archivo, 'a') as f:
+            dataFrame.to_csv(f, header=False, index=False)
     f.close()
 
 def cargar(archivo):
@@ -154,6 +158,24 @@ def crear_agentes_aleatorios(Num_agentes):
 
     return Agentes
 
+def crear_agentes1():
+    Agentes = []
+    Agentes.append(agente([1],[],[7],[]))
+    Agentes.append(agente([0],[],[0],[]))
+    Agentes.append(agente([0],[],[0],[]))
+    Agentes.append(agente([0],[],[0],[]))
+
+    for a in Agentes:
+        if a.estado[-1] == 1:
+            if X > 0.5:
+                a.score.append(-1)
+            else:
+                a.score.append(1)
+        else:
+            a.score.append(0)
+
+    return Agentes
+
 def crear_politicas():
     politicas = [
     {(0,0): 0, (1,1): 0, (1, -1): 0}, #0
@@ -167,23 +189,23 @@ def crear_politicas():
     ]
     return politicas
 
-def agentes_aprenden(Agentes):
+def agentes_aprenden(Agentes,ronda):
     #Los agentes copian la politica del ganador de la Ronda
     for agente in Agentes:
         #print(Agentes.index(agente))
-        maximo=agente.score[-1]
+        maximo=agente.score[ronda]
         maximo_vecino=Agentes.index(agente)
         #print(agente.vecinos)
         for index_vecino in agente.vecinos:
-            if((Agentes[index_vecino].score[-1])>(maximo)):
+            if((Agentes[index_vecino].score[ronda])>(maximo)):
                 #print('Hay cambio')
                 #print('Puntaje anterior',maximo)
-                maximo=Agentes[index_vecino].score[-1]
+                maximo=Agentes[index_vecino].score[ronda]
                 #print('Puntaje anterior vecino',maximo)
                 maximo_vecino=index_vecino
             #else:
                 #print('No hay cambio')
-        agente.politica.append(Agentes[maximo_vecino].politica[-1])
+        agente.politica.append(Agentes[maximo_vecino].politica[ronda])
     return Agentes
 
 def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
@@ -193,7 +215,7 @@ def simulacion(Num_agentes, Num_iteraciones, UMBRAL, inicial, N, PARS):
     leer_red(agentes)
     for i in range(Num_iteraciones):
         agentes = juega_ronda(agentes, politicas, UMBRAL)
-        agentes = agentes_aprenden(agentes)
+        agentes = agentes_aprenden(agentes, i)
     data = crea_dataframe_agentes(agentes, Num_iteraciones, PARS, N)
     data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
     data['Consistencia'] = data.apply(lambda x : encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
