@@ -25,4 +25,4 @@ def main(Num_agentes, Num_iteraciones, Num_experimentos):
 
     return data
 
-print(main(50,50,50))
+
