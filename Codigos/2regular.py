@@ -68,8 +68,9 @@ identificador = 0
 UMBRAL = 0.5
 inicial = True
 for Num_agentes in [5,6,10,11,101,1000]:
-    PARS = [Num_agentes, 1]
-    redes1.create_graph(Num_agentes, tipoRed, 2, True)
-    simulacion(Num_agentes,tipoRed,Num_iteraciones,UMBRAL,inicial,identificador,PARS)
-    identificador += 1
-    inicial = False
+    for i in range(100):
+        PARS = [Num_agentes, 1]
+        redes1.create_graph(Num_agentes, tipoRed, 2, True)
+        simulacion(Num_agentes,tipoRed,Num_iteraciones,UMBRAL,inicial,identificador,PARS)
+        identificador += 1
+        inicial = False

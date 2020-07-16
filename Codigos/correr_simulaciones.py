@@ -1,11 +1,6 @@
 import pandas as pd
-import random as rd
-import numpy as np
-import matplotlib.pyplot as plt
-import redes1
 import ElFarolFunciones as F
-import seaborn as sns
-#import igraph as ig
+import redes1
 
 def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAMETROS, N):
     muestra = []
@@ -60,13 +55,15 @@ def simulacion(Num_agentes, tipoRed, Num_iteraciones, UMBRAL, inicial, N, PARS):
     data = crea_dataframe_agentes(Num_agentes, tipoRed, agentes, Num_iteraciones, PARS, N)
     data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
     data['Consistencia'] = data.apply(lambda x : F.encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
-    F.guardar(data, 'Red1_Completa.csv', inicial)
+    F.guardar(data, 'simulaciones.csv', inicial)
 
 Num_iteraciones = 300
-tipoRed = 'Full'
 identificador = 0
 UMBRAL = 0.5
 inicial = True
+
+print('Corriendo simulacion red completa...')
+tipoRed = 'Full'
 for Num_agentes in [5,6,10,11,101,1000]:
     for i in range(100):
         PARS = [Num_agentes, 1]
@@ -74,3 +71,21 @@ for Num_agentes in [5,6,10,11,101,1000]:
         simulacion(Num_agentes,tipoRed,Num_iteraciones,UMBRAL,inicial,identificador,PARS)
         identificador += 1
         inicial = False
+
+print('Corriendo simulacion red 2-regular...')
+tipoRed = 'Kregular'
+for Num_agentes in [5,6,10,11,101,1000]:
+    for i in range(100):
+        PARS = [Num_agentes, 1]
+        redes1.create_graph(Num_agentes, tipoRed, 2, True)
+        simulacion(Num_agentes,tipoRed,Num_iteraciones,UMBRAL,inicial,identificador,PARS)
+        identificador += 1
+
+print('Corriendo simulacion red 4-regular...')
+tipoRed = 'Kregular'
+for Num_agentes in [5,6,10,11,101,1000]:
+    for i in range(100):
+        PARS = [Num_agentes, 1]
+        redes1.create_graph(Num_agentes, tipoRed, 4, True)
+        simulacion(Num_agentes,tipoRed,Num_iteraciones,UMBRAL,inicial,identificador,PARS)
+        identificador += 1
