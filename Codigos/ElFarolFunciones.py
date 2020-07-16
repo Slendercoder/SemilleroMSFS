@@ -122,7 +122,7 @@ def crea_dataframe_agentes(Agentes, Num_iteraciones, PARAMETROS, N):
 
 def guardar(dataFrame, archivo, inicial):
     if inicial:
-        os.remove(archivo)
+        #os.remove(archivo)
         dataFrame.to_csv(archivo, index = False)
     else:
         with open(archivo, 'a') as f:

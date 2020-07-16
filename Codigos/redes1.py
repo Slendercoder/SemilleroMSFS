@@ -28,6 +28,5 @@ def create_graph(N,type,k,printg):
         ff.write(str(edge[0])+" "+str(edge[1])+"\n")
     ff.close()
 
-    ig.plot(g,type+'.eps')
-
-    print("yes")
+    #ig.plot(g,type+'.eps')
+    #print("yes")
