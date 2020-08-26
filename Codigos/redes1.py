@@ -1,5 +1,6 @@
 #Library for network implementation
 import igraph as ig
+import cairocffi as cairo
 
 def create_graph(N,type,k,printg):
 
@@ -22,11 +23,13 @@ def create_graph(N,type,k,printg):
     else:
         print("unvalid input")
 
-    ff = open('connlist.dat', 'w')
+    ff = open('data/connlist.dat', 'w')
     for e in g.es:
         edge = e.tuple
         ff.write(str(edge[0])+" "+str(edge[1])+"\n")
     ff.close()
 
     #ig.plot(g,type+'.eps')
+    ig.plot(g,'imagenes/red.png')
     #print("yes")
+
