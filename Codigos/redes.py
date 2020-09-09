@@ -1,10 +1,16 @@
 # Libreria para creacion de redes
-
+import igraph as ig
 from numpy import random
 import sys, math
 #from triangular import Triangular
 
-def random_graph(N, p):
+def guardar_imagen(n_vertices):
+    g = ig.Graph()
+    g.add_vertices(n_vertices)
+    g = ig.Graph.Read_Edgelist('./data/connlist.dat')
+    ig.plot(g,'imagenes/red.png')
+
+def random_graph(N, p, imagen=True):
     ## Create a random conectivity matrix in which each edge is included with
     ## probability p (Erdos-Renyi model).
 
@@ -37,7 +43,7 @@ def random_graph(N, p):
     # print(lnkcnt)
     # print(float(sum(lnkcnt))/N)
 
-    ff = open('connlist.dat', 'w')
+    ff = open('./data/connlist.dat', 'w')
     for i in range(len(llinks)):
         # print("printing link")
         ff.write(str(llinks[i][0])+" "+str(llinks[i][1])+"\n")
@@ -48,10 +54,13 @@ def random_graph(N, p):
     for i in lnkcnt:
         hist[i] += 1
 
-    hf = open('deg_hist.dat', 'w')
+    hf = open('./data/deg_hist.dat', 'w')
     for i in range(N):
         hf.write(str(i)+' '+str(hist[i])+'\n')
     hf.close()
+
+    if imagen:
+        guardar_imagen(N)
 
 def small_world(N,p):
     ## Create a regular conectivity matrix in which each edge is connected only
@@ -110,7 +119,7 @@ def small_world(N,p):
 
     print(lnkcnt)
 
-    ff = open('connlist.dat', 'w')
+    ff = open('./data/connlist.dat', 'w')
     for i in range(len(llinks)):
         ff.write(str(llinks[i][0])+" "+str(llinks[i][1])+"\n")
     ff.close()
@@ -120,15 +129,18 @@ def small_world(N,p):
     for i in lnkcnt:
         hist[i] += 1
 
-    hf = open('deg_hist.dat', 'w')
+    hf = open('./data/deg_hist.dat', 'w')
     for i in range(N):
         hf.write(str(i)+' '+str(hist[i])+'\n')
     hf.close()
 
+    if imagen:
+        guardar_imagen(N)
+
 def scale_free(N, N0, Nhci, pnhc, phc):
     ## Initially, there are N0 nodes connected randomly to one another (prob. p0).
-    ## New nodes are added one by one. The prob of the new node to connect with an 
-    ## existingnode i is pi=ki/sum_j kj. Where kj is the degree (No. of connections) 
+    ## New nodes are added one by one. The prob of the new node to connect with an
+    ## existingnode i is pi=ki/sum_j kj. Where kj is the degree (No. of connections)
     ## of node j. (Barabasi and Albert model)
     # N=No. of nodes,N0=No. of  nodes in the initial network,
     # Nhci=No. of highly connected (HC) nodes in the initial network,
@@ -162,7 +174,7 @@ def scale_free(N, N0, Nhci, pnhc, phc):
         for a in range(1,clsize):
             i = clusters[n][a]
             lnkcnt[hcn] += 1
-            lnkcnt[i] += 1 
+            lnkcnt[i] += 1
             #	    print(str(i)+" "+str(j)+"\n")
             #	    links.set_element(i,j,1)
             pair = [min(i,j),max(i,j)]
@@ -175,7 +187,7 @@ def scale_free(N, N0, Nhci, pnhc, phc):
                 rnd = random.random()
                 if rnd < pnhc:
                     lnkcnt[i] += 1
-                    lnkcnt[j] += 1 
+                    lnkcnt[j] += 1
                     pair = [min(i,j),max(i,j)]
                     llinks.append(pair)
     for n in range(Nhci-1):
@@ -186,11 +198,11 @@ def scale_free(N, N0, Nhci, pnhc, phc):
             rnd = random.random()
             if rnd < phc:
                 lnkcnt[i] += 1
-                lnkcnt[j] += 1 
+                lnkcnt[j] += 1
                 pair = [min(i,j),max(i,j)]
                 llinks.append(pair)
-                
-            
+
+
     #Add new nodes
     for i in range(N0,N):
         #total number of links
@@ -208,7 +220,7 @@ def scale_free(N, N0, Nhci, pnhc, phc):
     print(lnkcnt)
     print(float(sum(lnkcnt))/N)
 
-    ff = open('connlist.dat', 'w')
+    ff = open('./data/connlist.dat', 'w')
     for i in range(len(llinks)):
         ff.write(str(llinks[i][0])+" "+str(llinks[i][1])+"\n")
     ff.close()
@@ -217,8 +229,11 @@ def scale_free(N, N0, Nhci, pnhc, phc):
     hist = [0 for i in range(N)]
     for i in lnkcnt:
         hist[i] += 1
-        
-    hf = open('deg_hist.dat', 'w')
+
+    hf = open('./data/deg_hist.dat', 'w')
     for i in range(N):
         hf.write(str(i)+' '+str(hist[i])+'\n')
     hf.close()
+
+    if imagen:
+        guardar_imagen(N)

@@ -2,7 +2,7 @@ import pandas as pd
 import ElFarolFunciones as F
 import redes1
 
-def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAMETROS, N,corte=10):
+def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAMETROS, N, corte=10):
     muestra = []
     num_agentes = []
     red = []
@@ -54,8 +54,8 @@ def simulacion(Num_agentes, tipoRed, Num_iteraciones, UMBRAL, inicial, N, PARS):
         agentes = F.juega_ronda(agentes, politicas, UMBRAL)
         agentes = F.agentes_aprenden(agentes, i)
     data = crea_dataframe_agentes(Num_agentes, tipoRed, agentes, Num_iteraciones, PARS, N)
-    data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
-    data['Consistencia'] = data.apply(lambda x : F.encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
+    # data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
+    # data['Consistencia'] = data.apply(lambda x : F.encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
     F.guardar(data, 'simulaciones'+tipoRed+str(PARS[1])+'.csv', inicial)
 
 Num_iteraciones = 100
