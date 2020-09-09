@@ -2,7 +2,7 @@
 import igraph as ig
 import cairocffi as cairo
 
-def create_graph(N,type,k,printg, imagen=True):
+def create_graph(N, type, k, printg, imagen=True):
 
     if type == "Full":
         g = ig.Graph.Full(N)
