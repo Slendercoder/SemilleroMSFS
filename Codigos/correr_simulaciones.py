@@ -3,6 +3,7 @@ import ElFarolFunciones as F
 import redes1
 
 def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAMETROS, N, corte=10):
+
     muestra = []
     num_agentes = []
     red = []
@@ -17,7 +18,19 @@ def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAM
         lista_parametros.append([])
     for i in range(len(Agentes)):
         for r in range(Num_iteraciones):
-            if r%corte == 0:
+            if corte == 0:
+                muestra.append(N)
+                num_agentes.append(Num_agentes)
+                red.append(tipoRed)
+                agente.append(i)
+                ronda.append(r)
+                estado.append(Agentes[i].estado[r])
+                puntaje.append(Agentes[i].score[r])
+                politica.append(Agentes[i].politica[r])
+                lista_num_iteraciones.append(Num_iteraciones)
+                for x in range(len(PARAMETROS)):
+                    lista_parametros[x].append(PARAMETROS[x])
+            elif r%corte == 0:
                 muestra.append(N)
                 num_agentes.append(Num_agentes)
                 red.append(tipoRed)
@@ -40,22 +53,24 @@ def crea_dataframe_agentes(Num_agentes, tipoRed, Agentes, Num_iteraciones, PARAM
     'Puntaje': puntaje,\
     'Politica': politica\
     })
+
     for p in range(len(PARAMETROS)):
         nombre = 'Parametro-' + str(p)
         data[nombre] = lista_parametros[p]
+
+    data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
+    data['Consistencia'] = data.apply(lambda x : encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
+    data = data[['Identificador','Parametro-0','Parametro-1','Agente','Ronda','Estado','Puntaje','Politica_lag','Politica','Consistencia']]
+
     return data
 
 def simulacion(Num_agentes, tipoRed, Num_iteraciones, UMBRAL, inicial, identificador, PARS):
-    agentes = F.crear_agentes_aleatorios(Num_agentes)
     politicas = F.crear_politicas()
-    # Leyendo red de archivo
-    F.leer_red(agentes, str(identificador))
+    agentes = F.crear_agentes_aleatorios(Num_agentes, politicas, UMBRAL)
     for i in range(Num_iteraciones):
         agentes = F.juega_ronda(agentes, politicas, UMBRAL)
-        agentes = F.agentes_aprenden(agentes, i)
-    data = crea_dataframe_agentes(Num_agentes, tipoRed, agentes, Num_iteraciones, PARS, identificador)
-    # data['Politica_lag'] = data.groupby('Agente')['Politica'].transform('shift', 1)
-    # data['Consistencia'] = data.apply(lambda x : F.encontrar_consistencia (x['Politica'], x['Politica_lag']), axis=1)
+        agentes = F.agentes_aprenden(agentes, i + 1)
+    data = crea_dataframe_agentes(Num_agentes, tipoRed, agentes, Num_iteraciones, PARS, identificador, 0)
     F.guardar(data, 'simulaciones-' + tipoRed + '-' + str(PARS[0]) + '-' + str(PARS[1]) + '.csv', inicial)
 
 Num_experimentos = 100
