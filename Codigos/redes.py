@@ -4,13 +4,13 @@ from numpy import random
 import sys, math
 #from triangular import Triangular
 
-def guardar_imagen(n_vertices):
+def guardar_imagen(n_vertices, identificador=''):
     g = ig.Graph()
     g.add_vertices(n_vertices)
-    g = ig.Graph.Read_Edgelist('./data/connlist.dat')
+    g = ig.Graph.Read_Edgelist('./data/redes/connlist.dat')
     ig.plot(g,'imagenes/red.png')
 
-def random_graph(N, p, imagen=True):
+def random_graph(N, p, imagen=True, identificador=''):
     ## Create a random conectivity matrix in which each edge is included with
     ## probability p (Erdos-Renyi model).
 
@@ -43,7 +43,7 @@ def random_graph(N, p, imagen=True):
     # print(lnkcnt)
     # print(float(sum(lnkcnt))/N)
 
-    ff = open('./data/connlist.dat', 'w')
+    ff = open('./data/redes/connlist-' + str(identificador) + '.dat', 'w')
     for i in range(len(llinks)):
         # print("printing link")
         ff.write(str(llinks[i][0])+" "+str(llinks[i][1])+"\n")
@@ -54,13 +54,13 @@ def random_graph(N, p, imagen=True):
     for i in lnkcnt:
         hist[i] += 1
 
-    hf = open('./data/deg_hist.dat', 'w')
+    hf = open('./data/redes/deg_hist-' + str(identificador) + '.dat', 'w')
     for i in range(N):
         hf.write(str(i)+' '+str(hist[i])+'\n')
     hf.close()
 
     if imagen:
-        guardar_imagen(N)
+        guardar_imagen(N, identificador=identificador)
 
 def small_world(N,p):
     ## Create a regular conectivity matrix in which each edge is connected only

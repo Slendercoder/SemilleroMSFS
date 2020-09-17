@@ -25,7 +25,7 @@ def create_graph(N, type, k, printg, imagen=True, identificador=''):
     else:
         print("unvalid input")
 
-    ff = open('data/connlist' + identificador + '.dat', 'w')
+    ff = open('data/connlist-' + identificador + '.dat', 'w')
     for e in g.es:
         edge = e.tuple
         ff.write(str(edge[0])+" "+str(edge[1])+"\n")
